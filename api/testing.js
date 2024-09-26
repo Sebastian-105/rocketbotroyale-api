@@ -82,8 +82,8 @@ async function getToken(email, password) {
 }
 
 // Assuming you have the email and password available
-const email = '28schapfel105@gmail.com';
-const password = '28address';
+const email = 'asdf@gmail.com';
+const password = 'asdf';
 
 // Main function to execute the flow
 async function main() {
