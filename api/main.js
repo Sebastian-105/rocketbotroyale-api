@@ -1,115 +1,171 @@
-const fs = require('fs');
-const axios = require('axios');
-
-const CLIENT_VERSION = "999999";
-const BASE_URL = "https://dev-nakama.winterpixel.io/v2";
-const BASE_HEADERS = {
-  "accept": "application/json",
-  "authorization": "Basic OTAyaXViZGFmOWgyZTlocXBldzBmYjlhZWIzOTo=",
-  "origin": "https://rocketbotroyale2.winterpixel.io",
-  "referer": "https://rocketbotroyale2.winterpixel.io/",
-  "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
-  "content-type": "application/json"
-};
-const accounts = [
-  { email: '', password: '' },
-  { email: 'testsubject105@gmail.com', password: 'password' }, // Max, hopefully; if he lets me
-  // Add more accounts as needed
-];
-
-// Function to read accounts from a JSON file (if needed later)
-
-// Function to send requests using axios
-async function sendReq(data, url, auth, isGet) {
-  try {
-    const config = {
-      headers: {
-        'Authorization': auth
-      }
-    };
-    const response = isGet ? await axios.get(url, config) : await axios.post(url, data, config);
-    return response.data;
-  } catch (err) {
-    console.error('Error sending request:', err);
-    throw err; // Re-throw the error to handle it at the top level
-  }
+const fs = require("fs");
+let storagecache = {};
+const email = "testsubject105@gmail.com";
+const password = "password";
+async function getProfile(id, token) {
+  return await fetch("https://dev-nakama.winterpixel.io/v2/rpc/rpc_get_users_with_profile", {
+    "headers": {
+      "accept": "application/json",
+      "accept-language": "en-US,en;q=0.9",
+      "authorization": `Bearer ${token}`,
+      "priority": "u=1, i",
+      "sec-ch-ua": "\"Chromium\";v=\"127\", \"Not)A;Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0",
+      "sec-ch-ua-platform": "\"Linux\"",
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-site",
+      "Referer": "https://rocketbotroyale.winterpixel.io/",
+      "Referrer-Policy": "strict-origin-when-cross-origin"
+    },
+    "body": `\"{\\\"ids\\\":[\\\"${id}\\\"]}\"`,
+    "method": "POST"
+  }).then(function(res) {
+    return res.text();
+  })
 }
-
-// Function to get user info using the token
-async function getUserInfo(token) {
-  
-  const res = await sendReq({}, 'https://dev-nakama.winterpixel.io/v2/rpc/collect_timed_bonus', token);
-    if (!res) {
-      console.error(`Could not collect bonus for ${email}.`);
-      return;
-  }
-  const accountData = await sendReq(
-    null,
-    `${BASE_URL}/account`,
-    token,
-    true
-  );
-}
-async function getUserInfo1(email, password) {
-  try {
-    const token = 'Bearer ' + await getToken(email, password);
-    if (!token || token.split('Bearer ')[1] === 'undefined') {
-      console.error(`Could not log into account with email ${email}.`);
-      return;
-    }
-
-    const res = await sendReq({}, 'https://dev-nakama.winterpixel.io/v2/rpc/collect_timed_bonus', token);
-    if (!res) {
-      console.error(`Could not collect bonus for ${email}.`);
-      return;
-    }
-
-    const accountData = await sendReq(null, 'https://dev-nakama.winterpixel.io/v2/account', token, true);
-    const wallet = JSON.parse(accountData.wallet);
-    console.log(`Bonus collected for ${accountData.user.display_name}. Current coins: ${wallet.coins}`);
-  } catch (err) {
-    console.error('Error collecting bonus:', err);
-    throw err; // Re-throw the error to handle it at the top level
-  }
-}
-
-// Function to get token by providing email and password
-async function getToken(email, password) {
-  try {
-    const data = {
-      email,
-      password,
-      vars: { client_version: '99999' }
-    };
-    const response = await axios.post(
-      'https://dev-nakama.winterpixel.io/v2/account/authenticate/email?create=false&=',
-      data,
-      {
-        headers: {
-          'Authorization': 'Basic OTAyaXViZGFmOWgyZTlocXBldzBmYjlhZWIzOTo='
-        }
-      }
-    );
-    return response.data.token;
-  } catch (err) {
-    console.error('Error getting token:', err);
-    throw err; // Re-throw the error to handle it at the top level
-  }
+async function getLeaderboard(season) {
+  return await fetch("https://dev-nakama.winterpixel.io/v2/rpc/query_leaderboard", {
+    "headers": {
+      "accept": "application/json",
+      "accept-language": "en-US,en;q=0.9",
+      "authorization": `Bearer ${token}`,
+      "priority": "u=1, i",
+      "sec-ch-ua": "\"Chromium\";v=\"127\", \"Not)A;Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0",
+      "sec-ch-ua-platform": "\"Linux\"",
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-site",
+      "Referer": "https://rocketbotroyale.winterpixel.io/",
+      "Referrer-Policy": "strict-origin-when-cross-origin"
+    },
+    "body": `\"{\\\"leaderboard\\\":\\\"tankkings_trophies\\\",\\\"season\\\":${season}}\"`,
+    "method": "POST"
+  }).then(function(res) {
+    return res.text();
+  })
 }
 
 
-// Assuming you have the email and password available
-const email = 'testsubject105@gmail.com';
-const password = 'password';
-module.exports.handler = async (event, context) => {
-  try {
-    const requests = accounts.map(account => getUserInfo1(account.email, account.password));
-    await Promise.all(requests);
-    console.log(`Claimed coins for ${accounts.length} accounts.`);
-    return { statusCode: 200, body: 'Cron job executed successfully.' }; // Return success response
-  } catch (err) {
-    
-    console.error('Error processing accounts:', err);
-    return { statusCode: 500, body: 'Error executing cron job.' }; // Return error response
-  }
-};
+async function updateToken() {
+  return await fetch("https://dev-nakama.winterpixel.io/v2/account/authenticate/email?create=false&", {
+    "headers": {
+      "accept": "application/json",
+      "accept-language": "en-US,en;q=0.9",
+      "authorization": "Basic OTAyaXViZGFmOWgyZTlocXBldzBmYjlhZWIzOTo=",
+      "priority": "u=1, i",
+      "sec-ch-ua": "\"Chromium\";v=\"127\", \"Not)A;Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0",
+      "sec-ch-ua-platform": "\"Linux\"",
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-site",
+      "Referer": "https://rocketbotroyale.winterpixel.io/",
+      "Referrer-Policy": "strict-origin-when-cross-origin"
+    },
+    "body": `{\"email\":\"${email}\",\"password\":\"${password}\",\"vars\":{\"client_version\":\"65\",\"platform\":\"HTML5\"}}`,
+    "method": "POST"
+  }).then(function(res) {
+    // console.log(res);
+    return res.json(); 
+  }).then(function(json) {
+    console.log(json);
+    token = json["token"];
+    return json["token"];
+  });
+}
+async function isOnline(id, token) {
+  return await getProfile(id, token).then(function(str) {
+    return str.split('\\\"online\\\":')[1].split(',')[0];
+  });
+}
+
+async function getDisplayName(id, token) {
+  return await getProfile(id, token).then(function(str) {
+    return str.split('\\\"display_name\\\":\\\"')[1].split('\\\",')[0];
+  });
+}
+
+// only works for self
+async function getLoadout(id, token) {
+  return await fetch("https://dev-nakama.winterpixel.io/v2/storage", {
+    "headers": {
+      "accept": "application/json",
+      "accept-language": "en-US,en;q=0.9",
+      "authorization": `Bearer ${token}`,
+      "priority": "u=1, i",
+      "sec-ch-ua": "\"Chromium\";v=\"127\", \"Not)A;Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0",
+      "sec-ch-ua-platform": "\"Linux\"",
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-site",
+      "Referer": "https://rocketbotroyale.winterpixel.io/",
+      "Referrer-Policy": "strict-origin-when-cross-origin"
+    },
+    "body": `{\"object_ids\":[{\"collection\":\"tankkings\",\"key\":\"loadout\",\"user_id\":\"${id}\"}]}`,
+    "method": "POST"
+  }).then(function(res) {
+    return res.json(); 
+  }).then(function(json) {
+    return json["objects"][0]["value"];
+  });
+}
+
+async function getFriends(id, token) {
+  return await fetch(`https://dev-nakama.winterpixel.io/v2/friend?ids=${id}`, {
+    "headers": {
+      "accept": "application/json",
+      "accept-language": "en-US,en;q=0.9",
+      "authorization": `Bearer ${token}`,
+      "priority": "u=1, i",
+      "sec-ch-ua": "\"Chromium\";v=\"127\", \"Not)A;Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0",
+      "sec-ch-ua-platform": "\"Linux\"",
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-site",
+      "Referer": "https://rocketbotroyale.winterpixel.io/",
+      "Referrer-Policy": "strict-origin-when-cross-origin"
+    },
+    "body": "",//"\"{\\\"leaderboard\\\":\\\"tankkings_trophies\\\",\\\"limit\\\":100,\\\"season\\\":34}\"",
+    "method": "POST"
+  }).then(function(res) {
+    return res.text();
+  }).then(function(txt) {
+    return txt//.split(":[")[1].split("]")[0];
+  })
+}
+
+async function getIdFromStoredUser(username) {
+  fs.readFile("aliases.json", function(res) {
+    let data = JSON.parse(res);
+    console.log(data);
+    return data[username];
+  });
+}
+
+async function addUserIdPair(username, id) {
+  let data;
+  fs.readFile("aliases.json", function(res) {
+    data = JSON.parse(res);
+  });
+  data[username] = id;
+  fs.writefile("aliases.json", data);
+}
+
+module.exports = { getProfile, getLeaderboard, updateToken, isOnline, getDisplayName, getLoadout, getFriends, getIdFromStoredUser, addUserIdPair  };
+
+async function main() {
+  let token = await updateToken();
+  let online = await isOnline()
+  let displayName = await getDisplayName("", token);
+  let leaderboard = await getLeaderboard(0, token);
+  let profile = await getProfile("", token);
+  console.log(profile);
+}
+
+main();
+
+
