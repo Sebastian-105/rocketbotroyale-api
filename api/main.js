@@ -1,8 +1,7 @@
 const fs = require('fs');
 const axios = require('axios');
-const express = require('express');
 
-const CLIENT_VERSION = "99999";
+const CLIENT_VERSION = "999999";
 const BASE_URL = "https://dev-nakama.winterpixel.io/v2";
 const BASE_HEADERS = {
   "accept": "application/json",
@@ -12,103 +11,105 @@ const BASE_HEADERS = {
   "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
   "content-type": "application/json"
 };
+const accounts = [
+  { email: '', password: '' },
+  { email: 'testsubject105@gmail.com', password: 'password' }, // Max, hopefully; if he lets me
+  // Add more accounts as needed
+];
 
 // Function to read accounts from a JSON file (if needed later)
-function fetchAccounts() {
-  try {
-    const data = fs.readFileSync('json/accounts.json', 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    console.error('Error reading accounts from file:', error);
-    process.exit(1);
-  }
-}
 
 // Function to send requests using axios
-async function sendReq(data, url, token, isGet = false) {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-    ...BASE_HEADERS,
-  };
-
+async function sendReq(data, url, auth, isGet) {
   try {
-    const response = isGet
-      ? await axios.get(url, { headers })
-      : await axios.post(url, data, { headers });
-
+    const config = {
+      headers: {
+        'Authorization': auth
+      }
+    };
+    const response = isGet ? await axios.get(url, config) : await axios.post(url, data, config);
     return response.data;
   } catch (err) {
-    if (err.response) {
-      // Log more details from the error response
-      console.error('Error in sendReq:', {
-        status: err.response.status,
-        statusText: err.response.statusText,
-        data: err.response.data,
-      });
-    } else {
-      // Handle network or other errors
-      console.error('Error in sendReq:', err.message);
-    }
-    return null;
+    console.error('Error sending request:', err);
+    throw err; // Re-throw the error to handle it at the top level
   }
 }
 
 // Function to get user info using the token
 async function getUserInfo(token) {
+  
+  const res = await sendReq({}, 'https://dev-nakama.winterpixel.io/v2/rpc/collect_timed_bonus', token);
+    if (!res) {
+      console.error(`Could not collect bonus for ${email}.`);
+      return;
+  }
   const accountData = await sendReq(
     null,
     `${BASE_URL}/account`,
     token,
     true
   );
+}
+async function getUserInfo1(email, password) {
+  try {
+    const token = 'Bearer ' + await getToken(email, password);
+    if (!token || token.split('Bearer ')[1] === 'undefined') {
+      console.error(`Could not log into account with email ${email}.`);
+      return;
+    }
 
-  if (accountData) {
+    const res = await sendReq({}, 'https://dev-nakama.winterpixel.io/v2/rpc/collect_timed_bonus', token);
+    if (!res) {
+      console.error(`Could not collect bonus for ${email}.`);
+      return;
+    }
+
+    const accountData = await sendReq(null, 'https://dev-nakama.winterpixel.io/v2/account', token, true);
     const wallet = JSON.parse(accountData.wallet);
-    const user = accountData.user;
-    console.log('User Info:', user, 'Wallet:', wallet);
-  } else {
-    console.log('Failed to retrieve user info');
+    console.log(`Bonus collected for ${accountData.user.display_name}. Current coins: ${wallet.coins}`);
+  } catch (err) {
+    console.error('Error collecting bonus:', err);
+    throw err; // Re-throw the error to handle it at the top level
   }
 }
 
 // Function to get token by providing email and password
 async function getToken(email, password) {
-  const data = {
-    email: email,
-    password: password,
-    vars: { client_version: CLIENT_VERSION },
-  };
   try {
-    let response = await axios.post(
-      `${BASE_URL}/account/authenticate/email?create=false&=`,
+    const data = {
+      email,
+      password,
+      vars: { client_version: '99999' }
+    };
+    const response = await axios.post(
+      'https://dev-nakama.winterpixel.io/v2/account/authenticate/email?create=false&=',
       data,
       {
         headers: {
-          Authorization: `Basic OTAyaXViZGFmOWgyZTlocXBldzBmYjlhZWIzOTo=`,
-        },
+          'Authorization': 'Basic OTAyaXViZGFmOWgyZTlocXBldzBmYjlhZWIzOTo='
+        }
       }
     );
     return response.data.token;
-
   } catch (err) {
-    console.error(
-      `Error in getToken: ${err.response ? err.response.data : err.message}`
-    );
-    return null;
+    console.error('Error getting token:', err);
+    throw err; // Re-throw the error to handle it at the top level
   }
 }
+
 
 // Assuming you have the email and password available
-const email = 'adf@gmail.com';
-const password = 'asdf';
-
-// Main function to execute the flow
-async function main() {
-  const token = await getToken(email, password);
-  console.log('Token:', token);
-  if (token) {
-    await getUserInfo(token);
+const email = 'testsubject105@gmail.com';
+const password = 'password';
+module.exports.handler = async (event, context) => {
+  try {
+    const requests = accounts.map(account => getUserInfo1(account.email, account.password));
+    await Promise.all(requests);
+    console.log(`Claimed coins for ${accounts.length} accounts.`);
+    return { statusCode: 200, body: 'Cron job executed successfully.' }; // Return success response
+  } catch (err) {
+    
+    console.error('Error processing accounts:', err);
+    return { statusCode: 500, body: 'Error executing cron job.' }; // Return error response
   }
-}
-
-main(); // Call the main function to execute the code
+};
