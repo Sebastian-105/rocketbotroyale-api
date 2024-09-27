@@ -4,9 +4,7 @@ const axios = require('axios');
 const accounts = [
   { email: '', password: '' },
   { email: '', password: '' }, // Max, hopefully; if he lets me
-  { email: '28schapfel105@gmail.com', password: '28address' }, // Blaze
-  { email: '29stu137@lexingtonma.org', password: '123654789' }, // [KAG] ThunderTOAD
-  { email: 'sebastian105schapfel@gmail.com', password: 'HELP179coup' }, // 105 | Sebastian
+  { email: 'testsubject105@gmail.com', password: 'password' }, // Blaze
   // Add more accounts as needed
 ];
 const timerDelay = 60000; // milliseconds
