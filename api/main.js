@@ -166,11 +166,10 @@ module.exports = { getProfile, getLeaderboard, updateToken, isOnline, getDisplay
 async function returnLeaderboards() {
 	let season = 15;
 	let token = await updateToken();
+	let profile = await getProfile(`7bb4cb45-b858-491e-9904-95018460f586`, token);
 	let leaderboard = await getLeaderboard(season, token);
-	fs.writeFile(`./leaderboard/season_${season}.json`, leaderboard, (err) => {
-		if (err) throw err;
-		console.log(`JSON file for season ${season} has been written!`);
-	});
+	let newProfile = JSON.parse(profile)
+	console.log(profile)
 }
 
 returnLeaderboards();
