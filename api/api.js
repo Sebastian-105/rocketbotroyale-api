@@ -1,9 +1,10 @@
 const { json } = require('express/lib/response');
 const fs = require('fs');
+const { process_params } = require('express/lib/router');
 let test_email = 'testsubject105@gmail.com';
 let test_password = 'password';
-let playerID = `7bb4cb45-b858-491e-9904-95018460f586`;
 const baseURL = 'https://dev-nakama.winterpixel.io/v2';
+const playerID = process.argv.slice(2);
 
 // Get profile
 async function getProfile(id, token) {
@@ -55,16 +56,35 @@ async function updateToken() {
 			return json['token'];
 		});
 }
-async function isOnline(id, token) {
-	return await getProfile(id, token).then(function (str) {
-		return str.split('\\"online\\":')[1].split(',')[0];
-	});
-}
+// async function isOnline(id, token) {
+// 	return await getProfile(id, token).then(function (str) {
+// 		return str.split('\\"online\\":')[1].split(',')[0];
+// 	});
+// }
+// async function killstreaks(id, token) {
+// 	let display_name = await getDisplayName(id, token);
+// 	return await getProfile(id, token).then(function (str) {
+// 		let triples = str.split('\\"triple_kills\\":')[1].split(',')[0];
+// 		let doubles = str.split('\\"double_kills\\":')[1].split(',')[0];
+// 		let quads = str.split('\\"quad_kills\\":')[1].split(',')[0];
+// 		let allContent = `User ${display_name} has \n ${triples} triples \n ${doubles} doubles \n ${quads} quads`;
+// 		return allContent;
+// 	});
+// }
+// async function getDisplayName(id, token) {
+// 	return await getProfile(id, token).then(function (str) {
+// 		return str.split('\\"display_name\\":\\"')[1].split('\\",')[0];
+// 	});
+// }
 
-async function getDisplayName(id, token) {
-	return await getProfile(id, token).then(function (str) {
-		return str.split('\\"display_name\\":\\"')[1].split('\\",')[0];
-	});
+async function main() {
+	
+	let token = await updateToken();
+	let profile = await getProfile(playerID, token);
+	console.log(profile);
 }
-
-module.exports = { getProfile, updateToken }
+if (require.main === module) {
+	main()
+	console.log("This only runs when file1.js is executed directly");
+}
+module.exports = { getProfile, updateToken };

@@ -4,8 +4,8 @@ const { process_params } = require('express/lib/router');
 const fs = require('fs');
 const season = process.argv.slice(2).map(Number);
 console.log(`Getting records for season ${season}`);
-
 const baseURL = 'https://dev-nakama.winterpixel.io/v2';
+
 async function getLeaderboard(season, token) {
 	return await fetch('https://dev-nakama.winterpixel.io/v2/rpc/query_leaderboard', {
 		headers: {
