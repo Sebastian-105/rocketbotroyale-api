@@ -164,11 +164,10 @@ async function addUserIdPair(username, id) {
 module.exports = { getProfile, getLeaderboard, updateToken, isOnline, getDisplayName, getLoadout, getFriends, getIdFromStoredUser, addUserIdPair };
 
 async function returnLeaderboards() {
-	let season = 11;
+	let season = 15;
 	let token = await updateToken();
 	let leaderboard = await getLeaderboard(season, token);
-	const leaderboardJSON = JSON.stringify(leaderboard, null, 4);
-	fs.writeFile(`./leaderboard/season_${season}.json`, leaderboardJSON, (err) => {
+	fs.writeFile(`./leaderboard/season_${season}.json`, leaderboard, (err) => {
 		if (err) throw err;
 		console.log(`JSON file for season ${season} has been written!`);
 	});
