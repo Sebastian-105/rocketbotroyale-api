@@ -1,1 +1,0 @@
-const rbr = require("./main.js");
