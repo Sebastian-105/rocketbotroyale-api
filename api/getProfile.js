@@ -11,21 +11,20 @@ async function isOnline(id, token) {
 	});
 }
 
-async function getDisplayName(id, token) {
+async function getDisplayName(id, token) { //unused
 	return await getProfile(id, token).then(function (str) {
 		return str.split('\\"display_name\\":\\"')[1].split('\\",')[0];
 	});
 }
 async function killstreaks(id, token) {
-	let display_name = await getDisplayName(id, token);
+	let displayName = await getDisplayName(id, token);
 	return await getProfile(id, token).then(function (str) {
 		let triples = str.split('\\"triple_kills\\":')[1].split(',')[0];
 		let doubles = str.split('\\"double_kills\\":')[1].split(',')[0];
 		let quads = str.split('\\"quad_kills\\":')[1].split(',')[0];
 		let online = str.split('\\"online\\":')[1].split(',')[0];
-    var status = online ? "online" : "offline";
 
-		let allContent = `User ${display_name} (${online}) has \n ${triples} triples \n ${doubles} doubles \n ${quads} quads`;
+		let allContent = `User ${displayName} (Online: ${online}) has \n ${triples} triples \n ${doubles} doubles \n ${quads} quads`;
 		return allContent;
 	});
 }
