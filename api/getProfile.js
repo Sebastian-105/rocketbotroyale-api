@@ -37,7 +37,7 @@ async function getStatus(id, token) {
 		let friendCode = str1.split('\\"friend_code\\":\\"')[1].split('\\",')[0];
 		let allContent = `User ${displayName} (Online: ${online})\nUserID: ${userID}\nSkin: ${skin}\nFriend Code: ${friendCode}`;
 		return allContent;
-	});
+	});asdfa
 }
 async function returnKillstreaks() {
 	let token = await updateToken();
