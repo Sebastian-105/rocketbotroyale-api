@@ -77,14 +77,16 @@ async function updateToken() {
 // 	});
 // }
 
-async function main() {
+async function api() {
 	
 	let token = await updateToken();
 	let profile = await getProfile(playerID, token);
 	console.log(profile);
 }
 if (require.main === module) {
-	main()
+	api()
 	console.log("This only runs when file1.js is executed directly");
 }
+
+
 module.exports = { getProfile, updateToken };

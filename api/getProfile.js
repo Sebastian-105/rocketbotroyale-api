@@ -28,9 +28,15 @@ async function killstreaks(id, token) {
 		return allContent;
 	});
 }
-async function mainG() {
-	let token = await updateToken(updateToken());
+async function returnKillstreaks() {
+	let token = await updateToken();
 	let ks = await killstreaks(user_id, token);
   console.log(ks)
 }
-mainG()
+returnKillstreaks()
+
+async function returnStatus() {
+	let token = await updateToken()
+	let content = await getStatus();
+	console.log(content)
+}
