@@ -7,6 +7,8 @@ console.log(`Getting records for season ${season}`);
 const baseURL = 'https://dev-nakama.winterpixel.io/v2';
 // https://dev-nakama.winterpixel.io:443/v2/rpc/query_multiple_leaderboards
 // https://dev-nakama.winterpixel.io:443/v2/rpc/rpc_check_season_rollover
+// https://dev-nakama.winterpixel.io:443/v2/rpc/winterpixel_get_config
+// https://dev-nakama.winterpixel.io:443/v2/storage
 async function getLeaderboard(season, token) {
 	return await fetch('https://dev-nakama.winterpixel.io/v2/rpc/query_leaderboard', {
 		headers: {

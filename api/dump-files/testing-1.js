@@ -1,14 +1,17 @@
 const { json } = require('express/lib/response');
 const fs = require('fs');
 const { process_params } = require('express/lib/router');
-let test_email = 'lynxlover@gmail.com';
-let test_password = 'Kittyblitz';
+let test_email = 'testsubject105@gmail.com';
+let test_password = 'password';
 const baseURL = 'https://dev-nakama.winterpixel.io/v2';
 const playerID = process.argv.slice(2);
-
+// https://dev-nakama.winterpixel.io:443/v2/rpc/query_multiple_leaderboards
+// https://dev-nakama.winterpixel.io:443/v2/rpc/rpc_check_season_rollover
+// https://dev-nakama.winterpixel.io:443/v2/rpc/winterpixel_get_config
+// https://dev-nakama.winterpixel.io:443/v2/storage
 // Get profile
 async function getProfile(id, token) {
-	return await fetch(`${baseURL}/rpc/rpc_get_users_with_profile`, {
+	return await fetch(`https://dev-nakama.winterpixel.io:443/v2/storage`, {
 		headers: {
 			accept: 'application/json',
 			'accept-language': 'en-US,en;q=0.9',
@@ -23,7 +26,7 @@ async function getProfile(id, token) {
 			Referer: 'https://rocketbotroyale.winterpixel.io/',
 			'Referrer-Policy': 'strict-origin-when-cross-origin',
 		},
-		body: `\"{\\\"ids\\\":[\\\"${id}\\\"]}\"`,
+		body: `{\"object_ids\":[{\"collection\":\"tankkings\",\"key\":\"loadout\",\"user_id\":\"${id}\"}]}`,
 		method: 'POST',
 	}).then(function (res) {
 		return res.text();

@@ -31,6 +31,7 @@ async function getFriends(id, token) {
 async function FriendList() {
 	let token = await updateToken();
 	let friendList = await getFriends(user_id, token);
-	console.log(friendList);
+	console.log()
+	console.log(friendList, "success");
 }
 FriendList();
