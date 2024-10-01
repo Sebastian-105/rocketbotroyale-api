@@ -54,7 +54,7 @@ async function leaderboards(season) {
 			console.log('Records:');
 
 			payload.records.forEach((record) => {
-				let content = `Username: ${record.username}, Score: ${record.score}, Rank: ${record.rank}`;
+				let content = `Username: ${record.username}, Score: ${record.score}, Rank: ${record.rank}, User ID: ${record.owner_id}`;
 				console.log(content);
 			});
 		} catch (parseError) {
