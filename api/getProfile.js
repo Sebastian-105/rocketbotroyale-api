@@ -28,15 +28,27 @@ async function killstreaks(id, token) {
 		return allContent;
 	});
 }
+async function getStatus(id, token) {
+	let displayName = await getDisplayName(id, token);
+	return await getProfile(id, token).then(function (str1) {
+		let userID = str1.split('\\"user_id\\":\\"')[1].split('\\",')[0];
+		let online = str1.split('\\"online\\":')[1].split(',')[0];
+		let skin = str1.split('\\"skin\\":\\"')[1].split('\\",')[0];
+		let friendCode = str1.split('\\"friend_code\\":\\"')[1].split('\\",')[0];
+		let allContent = `User ${displayName} (Online: ${online})\nUserID: ${userID}\nSkin: ${skin}\nFriend Code: ${friendCode}`;
+		return allContent;
+	});
+}
 async function returnKillstreaks() {
 	let token = await updateToken();
 	let ks = await killstreaks(user_id, token);
   console.log(ks)
 }
-returnKillstreaks()
+// returnKillstreaks()
 
 async function returnStatus() {
 	let token = await updateToken()
-	let content = await getStatus();
+	let content = await getStatus(user_id, token);
 	console.log(content)
 }
+returnStatus();

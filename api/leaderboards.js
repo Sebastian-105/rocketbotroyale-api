@@ -5,6 +5,7 @@ const fs = require('fs');
 const season = process.argv.slice(2).map(Number);
 console.log(`Getting records for season ${season}`);
 const baseURL = 'https://dev-nakama.winterpixel.io/v2';
+// https://dev-nakama.winterpixel.io:443/v2/rpc/query_multiple_leaderboards
 
 async function getLeaderboard(season, token) {
 	return await fetch('https://dev-nakama.winterpixel.io/v2/rpc/query_leaderboard', {

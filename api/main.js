@@ -110,11 +110,9 @@ async function getLoadout(id, token) {
 		method: 'POST',
 	})
 		.then(function (res) {
-			return res.json();
+			return res.text();
 		})
-		.then(function (json) {
-			return json['objects'][0]['value'];
-		});
+		
 }
 
 async function getFriends(id, token) {
@@ -166,7 +164,7 @@ module.exports = { getProfile, getLeaderboard, updateToken, isOnline, getDisplay
 async function returnLeaderboards() {
 	let season = 15;
 	let token = await updateToken();
-	let leaderboard = await getFriends('2413124b-8fa1-44cd-8b9b-fa4333e2c429', token);
+	let leaderboard = await getLoadout('', token);
 	console.log(leaderboard)
 }
 
