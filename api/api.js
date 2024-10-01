@@ -1,8 +1,8 @@
 const { json } = require('express/lib/response');
 const fs = require('fs');
 const { process_params } = require('express/lib/router');
-let test_email = 'lynxlover@gmail.com';
-let test_password = 'Kittyblitz';
+let test_email = 'testsubject105@gmail.com';
+let test_password = 'password';
 const baseURL = 'https://dev-nakama.winterpixel.io/v2';
 const playerID = process.argv.slice(2);
 
