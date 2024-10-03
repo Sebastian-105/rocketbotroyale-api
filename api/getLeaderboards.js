@@ -57,8 +57,10 @@ async function leaderboards(season) {
 			console.log('Records:');
 
 			payload.records.forEach((record) => {
-				let content = `Username: ${record.username}, Score: ${record.score}, Rank: ${record.rank}, User ID: ${record.owner_id}`;
+				let content = `Username: ${record.username}, \nScore: ${record.score}, \nRank: ${record.rank}, \nUser ID: ${record.owner_id}`;
 				console.log(content);
+				console.log(`===========================================================================================`);
+
 			});
 		} catch (parseError) {
 			console.error('Error parsing JSON:', parseError);
