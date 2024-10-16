@@ -28,7 +28,7 @@ async function getSkins(id, token) {
 async function Skin105() {
 	let token = await updateToken();
 
-	let Skins = await getSkins(presetUsers[3], token);
+	let Skins = await getSkins(presetUsers[0], token);
 	console.log(Skins);
 }
 if (require.main === module) {
