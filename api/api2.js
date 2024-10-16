@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const PORT = 3000;
+const path = require('path');
+
 
 app.use(cors());
 app.use(express.json());
@@ -98,7 +100,7 @@ async function api() {
       res.status(500).send('Internal Server Error'); // Handle errors
     }
   });
-  app.get('/', (res) => {
+  app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
   })
   // Start the server
