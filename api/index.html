@@ -43,47 +43,7 @@
     </div>
     <br />
     <hr />
-    <!-- <div>
-      <h2 >Filter:</h2>
-      <button onclick="toggleAll()">Toggle all</button>
-      <br />
-      <br />
-      <form id="filterForm">
-        <input
-          type="checkbox"
-          class="filterOptions"
-          name="name-info"
-          checked
-          id="name-info"
-        />
-        <label for="name-info">Name Info</label><br /><br />
-        <input
-          type="checkbox"
-          class="filterOptions"
-          name="skins"
-          checked
-          id="skins"
-        />
-        <label for="skins"></label>Skin Info<br /><br />
-        <input type="checkbox" class="filterOptions" name="" checked id="" />
-        <label for=""></label><br /><br />
-        <input type="checkbox" class="filterOptions" name="" checked id="" />
-        <label for=""></label><br /><br />
-        <input type="checkbox" class="filterOptions" name="" checked id="" />
-        <label for=""></label><br /><br />
-        <input type="checkbox" class="filterOptions" name="" checked id="" />
-        <label for=""></label><br /><br />
-        <input type="checkbox" class="filterOptions" name="" checked id="" />
-        <label for=""></label><br /><br />
-        <input type="checkbox" class="filterOptions" name="" checked id="" />
-        <label for=""></label><br /><br />
-        <input type="checkbox" class="filterOptions" name="" checked id="" />
-        <label for=""></label><br /><br />
-        <input type="checkbox" class="filterOptions" name="" checked id="" />
-        <label for=""></label><br /><br />
-      </form>
-      <hr />
-    </div> -->
+    
     <h2>User Data:</h2>
     <div
       style="
@@ -101,14 +61,7 @@
       </div>
     </div>
     <script>
-      let nameInfo = docuemnt.getElementById('name-info');
-      let skins = document.getElementById('skins');
-      function toggleAll() {
-        const checkboxes = document.querySelectorAll('.filterOptions');
-        checkboxes.forEach((checkbox) => {
-          checkbox.checked = !checkbox.checked; // Toggle the checked state
-        });
-      }
+      
       document
         .getElementById('playerForm')
         .addEventListener('submit', async (e) => {
@@ -117,7 +70,7 @@
           const playerID = document.getElementById('userID').value;
 
           const response = await fetch(
-            'https://test-api.sebastian-105.com/v2/account/getProfile',
+            'https://cors-anywhere.herokuapp.com/https://test-api.sebastian-105.com/v2/account/getProfile',
             {
               method: 'POST',
               headers: {
@@ -130,9 +83,6 @@
           const data = await response.json().then((str) => {
             return JSON.parse(str);
           });
-
-          let finalContent = '';
-
           document.getElementById('userData').innerText = JSON.stringify(data);
         });
     </script>

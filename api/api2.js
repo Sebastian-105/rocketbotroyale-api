@@ -9,6 +9,7 @@ app.use(express.json());
 const { json } = require('express/lib/response');
 const fs = require('fs');
 const { process_params } = require('express/lib/router');
+const res = require('express/lib/response');
 let test_email = 'testsubject105@gmail.com';
 let test_password = 'password';
 const baseURL = 'https://dev-nakama.winterpixel.io/v2';
@@ -97,7 +98,9 @@ async function api() {
       res.status(500).send('Internal Server Error'); // Handle errors
     }
   });
-
+  app.get('/', (res) => {
+    res.sendFile(__dirname + '/index.html');
+  })
   // Start the server
   app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
