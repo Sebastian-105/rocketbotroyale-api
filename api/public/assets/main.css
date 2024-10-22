@@ -1,0 +1,73 @@
+/* General body styling */
+body {
+  font-family: 'Baloo 2', cursive;
+
+  margin: 0;
+  padding: 0;
+  color: #ffffff;
+  background-image: url('https://winterpixelcheats.com/ui/background_image_light_theme.png');
+  background-repeat: repeat;
+  background-size: auto;
+  animation: moveBackground 10s linear infinite;
+  text-align: center; /* Center all text and images */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  padding: 50px;
+  font-weight: bolder;
+}
+
+@keyframes moveBackground {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 98px -100px;
+  }
+}
+
+
+.content {
+  width: 90%;
+  background-color: #252525;
+  position: sticky;
+  height: auto;
+  border-radius: 50px;
+  border: solid black 5px;
+  outline: solid white 8px;
+}
+/* Filter options styling */
+.filterOptions {
+  width: 20px;
+  height: 20px;
+  border-radius: 15px;
+}
+
+/* Input styling */
+#userID {
+  width: 500px;
+  height: 50px;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+/* Button styling */
+.optionsButton {
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 15px;
+  min-width: 200px;
+  border: solid 1px black;
+  background-color: #00a2ff;
+  border: none;
+  cursor: pointer;
+  width: auto;
+}
+
+.optionsButton:hover {
+  background-color: #0078bd;
+}

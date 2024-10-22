@@ -1,11 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Main API</title>
-</head>
-<body>
-  <h1></h1>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Main API Page</title>
+    <!-- Link the external CSS file -->
+    <link rel="stylesheet" href="./assets/main.css" />
+  </head>
+  <style>
+    /* General body styling */
+    body {
+      font-family: 'Baloo 2', cursive;
+
+      margin: 0;
+      padding: 0;
+      color: #ffffff;
+      background-image: url('https://winterpixelcheats.com/ui/background_image_light_theme.png');
+      background-repeat: repeat;
+      background-size: auto;
+      animation: moveBackground 10s linear infinite;
+      text-align: center; /* Center all text and images */
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+      padding: 50px;
+      font-weight: bolder;
+    }
+
+    @keyframes moveBackground {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 98px -100px;
+      }
+    }
+
+    .content {
+      width: 90%;
+      background-color: #252525;
+      position: sticky;
+      height: auto;
+      border-radius: 50px;
+      border: solid black 5px;
+      outline: solid white 8px;
+    }
+    /* Filter options styling */
+    .filterOptions {
+      width: 20px;
+      height: 20px;
+      border-radius: 15px;
+    }
+
+    /* Input styling */
+    #userID {
+      width: 500px;
+      height: 50px;
+      padding: 5px;
+      border-radius: 5px;
+      font-size: 20px;
+    }
+
+    /* Button styling */
+    .optionsButton {
+      margin-bottom: 10px;
+      padding: 5px;
+      border-radius: 15px;
+      min-width: 200px;
+      border: solid 1px black;
+      background-color: #00a2ff;
+      border: none;
+      cursor: pointer;
+      width: auto;
+    }
+
+    .optionsButton:hover {
+      background-color: #0078bd;
+    }
+  </style>
+  <body>
+    <div class="content">
+      <h1>Main API Page</h1>
+      <div>
+        <p>Enter your user ID below:</p>
+        <form id="playerForm">
+          <label for="playerID">Player ID:</label>
+          <input type="text" id="userID" class="inputField" />
+          <br />
+          <br />
+        </form>
+        <button
+          class="optionsButton"
+          id="getUserDataButton"
+          type="submit"
+          onclick="getUserData('full')"
+        >
+          Get User Data
+        </button>
+        <br />
+        <br />
+        <button
+          class="optionsButton"
+          id="getUserDataSimple"
+          type="submit"
+          onclick="getUserData('simple')"
+        >
+          Get User Data (simplified)
+        </button>
+        <br />
+        <br />
+        <button
+          class="optionsButton"
+          id="getLeaderboards"
+          type="submit"
+          onclick="getLeaderboards()"
+        >
+          Get Leaderboards
+        </button>
+        <br />
+      </div>
+      <br />
+    </div>
+    <script>
+      function getUserData(type) {
+        let user_id = document.getElementById('userID').value;
+        if (type == 'simple') {
+          window.open(`/v2/account/getSimpleProfile?id=${user_id}`);
+        } else if (type == 'full') {
+          window.open(`/v2/account/getProfile?id=${user_id}`);
+        }
+      }
+    </script>
+    <script src="./assets/main.js"></script>
+  </body>
 </html>

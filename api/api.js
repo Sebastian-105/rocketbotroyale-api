@@ -89,8 +89,8 @@ async function getStatus(id, token) {
 		let userID = str1.split('\\"user_id\\":\\"')[1].split('\\",')[0];
 		let skin = str1.split('\\"skin\\":\\"')[1].split('\\",')[0];
 		let friendCode = str1.split('\\"friend_code\\":\\"')[1].split('\\",')[0];
-		const content = {"User":displayName, "Online":online,"userID":userID, "Skin":skin, "Friend Code": friendCode}
-		return content;
+		const contenta = {"User":displayName, "Online":online,"userID":userID, "Skin":skin, "Friend Code": friendCode}
+		return contenta;
 	});
 }
 
@@ -124,11 +124,10 @@ async function api() {
   
     try {
       const token = await updateToken(); 
-			let content = await getStatus(id, token);
+			const content = await getStatus(id, token);
       res.json(content);
     } catch (err) {
       res.status(500).json({ error: 'Failed to fetch player data' });
-			console.log(error, 'Failed to fetch player data')
     }
   });
   
