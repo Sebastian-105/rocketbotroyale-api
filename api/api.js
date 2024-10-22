@@ -1,3 +1,13 @@
+const express = require('express');
+const cors = require('cors');
+const app = express();
+const port = 3000;
+const path = require('path');
+
+
+app.use(cors());
+app.use(express.json());
+
 const { json } = require('express/lib/response');
 const fs = require('fs');
 const { process_params } = require('express/lib/router');
@@ -26,7 +36,7 @@ async function getProfile(id, token) {
 		body: `\"{\\\"ids\\\":[\\\"${id}\\\"]}\"`,
 		method: 'POST',
 	}).then(function (res) {
-		return res.text();
+		return res.json();
 	});
 }
 async function updateToken() {
@@ -56,32 +66,72 @@ async function updateToken() {
 			return json['token'];
 		});
 }
-// async function isOnline(id, token) {
-// 	return await getProfile(id, token).then(function (str) {
-// 		return str.split('\\"online\\":')[1].split(',')[0];
-// 	});
-// }
-// async function killstreaks(id, token) {
-// 	let display_name = await getDisplayName(id, token);
-// 	return await getProfile(id, token).then(function (str) {
-// 		let triples = str.split('\\"triple_kills\\":')[1].split(',')[0];
-// 		let doubles = str.split('\\"double_kills\\":')[1].split(',')[0];
-// 		let quads = str.split('\\"quad_kills\\":')[1].split(',')[0];
-// 		let allContent = `User ${display_name} has \n ${triples} triples \n ${doubles} doubles \n ${quads} quads`;
-// 		return allContent;
-// 	});
-// }
-// async function getDisplayName(id, token) {
-// 	return await getProfile(id, token).then(function (str) {
-// 		return str.split('\\"display_name\\":\\"')[1].split('\\",')[0];
-// 	});
-// }
+async function getDisplayName(id, token) { //unused
+	return await getProfile(id, token).then(function (str) {
+		return str.split('\\"display_name\\":\\"')[1].split('\\",')[0];
+	});
+}
+async function isOnline(id, token) {
+	return await getProfile(id, token).then(function (str) {
+		
+		let online = str.split('\\"online\\":')[1].split(',')[0];
+		if (online == "true") {
+			return true;
+		} else if (online == "false") {
+			return false
+		}
+	});
+}
+async function getStatus(id, token) {
+	let displayName = await getDisplayName(id, token);
+	let online = await isOnline(id, token);
+	return await getProfile(id, token).then(function (str1) {
+		let userID = str1.split('\\"user_id\\":\\"')[1].split('\\",')[0];
+		let skin = str1.split('\\"skin\\":\\"')[1].split('\\",')[0];
+		let friendCode = str1.split('\\"friend_code\\":\\"')[1].split('\\",')[0];
+		const content = {"User":displayName, "Online":online,"userID":userID, "Skin":skin, "Friend Code": friendCode}
+		return content;
+	});
+}
 
 async function api() {
+	app.get('/v2/account/getProfile', async (req, res) => {
+    const { id } = req.query; // Get playerID from query params
+  
+    if (!id) {
+      return res.status(400).json({ error: 'playerID is required' });
+    }
+  
+    try {
+      const token = await updateToken(); // Assume updateToken fetches the required token
+      const playerData = await getProfile(id, token); // Assume getProfile fetches user data
+      res.json(playerData);
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to fetch player data' });
+    }
+  });
 	
-	let token = await updateToken();
-	let profile = await getProfile(playerID, token);
-	console.log(profile);
+	app.get('/v2/account/getSimplifiedProfile', async (req, res) => {
+    const { id } = req.query; // Get playerID from query params
+  
+    if (!id) {
+      return res.status(400).json({ error: 'id is required' });
+    }
+  
+    try {
+      const token = await updateToken(); 
+			let content = await getStatus(id, token);
+      res.json(content);
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to fetch player data' });
+    }
+  });
+  
+  app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+  });
+  
+  
 }
 if (require.main === module) {
 	api()

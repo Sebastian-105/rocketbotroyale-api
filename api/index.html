@@ -61,7 +61,6 @@
       </div>
     </div>
     <script>
-      
       document
         .getElementById('playerForm')
         .addEventListener('submit', async (e) => {
@@ -70,19 +69,16 @@
           const playerID = document.getElementById('userID').value;
 
           const response = await fetch(
-            'https://cors-anywhere.herokuapp.com/https://test-api.sebastian-105.com/v2/account/getProfile',
+            `https://musical-funicular-jg677797xvqc574r-3000.app.github.dev/v2/account/getProfile?playerID=${playerID}`, // Send as query param
             {
-              method: 'POST',
+              method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ playerID }),
             },
           );
 
-          const data = await response.json().then((str) => {
-            return JSON.parse(str);
-          });
+          const data = await response.json();
           document.getElementById('userData').innerText = JSON.stringify(data);
         });
     </script>

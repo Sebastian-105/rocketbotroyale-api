@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const PORT = 3000;
+const port = 3000;
 const path = require('path');
 
 
@@ -65,51 +65,34 @@ async function updateToken() {
       return json['token'];
     });
 }
-// async function isOnline(id, token) {
-// 	return await getProfile(id, token).then(function (str) {
-// 		return str.split('\\"online\\":')[1].split(',')[0];
-// 	});
-// }
-// async function killstreaks(id, token) {
-// 	let display_name = await getDisplayName(id, token);
-// 	return await getProfile(id, token).then(function (str) {
-// 		let triples = str.split('\\"triple_kills\\":')[1].split(',')[0];
-// 		let doubles = str.split('\\"double_kills\\":')[1].split(',')[0];
-// 		let quads = str.split('\\"quad_kills\\":')[1].split(',')[0];
-// 		let allContent = `User ${display_name} has \n ${triples} triples \n ${doubles} doubles \n ${quads} quads`;
-// 		return allContent;
-// 	});
-// }
-// async function getDisplayName(id, token) {
-// 	return await getProfile(id, token).then(function (str) {
-// 		return str.split('\\"display_name\\":\\"')[1].split('\\",')[0];
-// 	});
-// }
-
-async function api() {
-  let token = await updateToken();
-  // let profile = await getProfile(playerID, token); 
-  console.log('Got user data');
-  app.post('/v2/account/getProfile', async (req, res) => {
-    const { playerID } = req.body; 
+async function app1() {
+  app.get('/v2/account/getProfile', async (req, res) => {
+    const { playerID } = req.query; // Get playerID from query params
+  
+    if (!playerID) {
+      return res.status(400).json({ error: 'playerID is required' });
+    }
+  
     try {
-      let profile = await getProfile(playerID, token);
-      res.json(profile); 
-    } catch (error) {
-      console.error(error);
-      res.status(500).send('Internal Server Error'); // Handle errors
+      const token = await updateToken(); // Assume updateToken fetches the required token
+      const playerData = await getProfile(playerID, token); // Assume getProfile fetches user data
+      res.json(playerData);
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to fetch player data' });
     }
   });
-  app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
-  })
-  // Start the server
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  
+  app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
   });
+  
+  
 }
+
+
+
 if (require.main === module) {
-  api();
+  app1();
   console.log('This only runs when file1.js is executed directly');
 }
 
