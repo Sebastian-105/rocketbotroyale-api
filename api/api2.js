@@ -82,21 +82,25 @@ async function isOnline(id, token) {
   });
 }
 async function getStatus(id, token) {
-  let displayName = await getDisplayName(id, token);
-  let online = await isOnline(id, token);
-  return await getProfile(id, token).then(function (str1) {
-    let userID = str1.split('\\"user_id\\":\\"')[1].split('\\",')[0];
-    let skin = str1.split('\\"skin\\":\\"')[1].split('\\",')[0];
-    let friendCode = str1.split('\\"friend_code\\":\\"')[1].split('\\",')[0];
-    const contenta = {
-      User: displayName,
-      Online: online,
-      userID: userID,
-      Skin: skin,
-      'Friend Code': friendCode,
-    };
-    return contenta;
-  });
+  const token1 = await updateToken();
+  const content = await getProfile(id, token1);
+  let displayName = await getDisplayName(id, token1);
+  let online = await isOnline(id, token1);
+
+  let parsedContent = JSON.parse(content);
+  let userID = parsedContent.user_id;
+  let skin = parsedContent.skin;
+  let friendCode = parsedContent.friend_code;
+
+  const contenta = {
+    User: displayName,
+    Online: online,
+    userID: userID,
+    Skin: skin,
+    'Friend Code': friendCode,
+  };
+
+  return contenta;
 }
 
 async function api() {
@@ -129,9 +133,10 @@ async function api() {
     try {
       const token = await updateToken();
       const content = await getStatus(id, token);
+
       res.json(content);
     } catch (err) {
-      res.status(500).json({ error: 'Failed to fetch player data' });
+      res.status(500).json({ error: 'Failed to fetch player data', err });
     }
   });
 
