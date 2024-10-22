@@ -116,6 +116,7 @@ async function api() {
   
     if (!id) {
       return res.status(400).json({ error: 'id is required' });
+
     }
   
     try {
@@ -124,6 +125,7 @@ async function api() {
       res.json(content);
     } catch (err) {
       res.status(500).json({ error: 'Failed to fetch player data' });
+			console.log(error, 'Failed to fetch player data')
     }
   });
   
