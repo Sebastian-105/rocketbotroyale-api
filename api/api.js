@@ -111,7 +111,7 @@ async function api() {
     }
   });
 	
-	app.get('/v2/account/getSimplifiedProfile', async (req, res) => {
+	app.get('/v2/account/getSimpleProfile', async (req, res) => {
     const { id } = req.query; // Get playerID from query params
   
     if (!id) {
