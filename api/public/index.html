@@ -86,22 +86,30 @@
       <h1>Main API Page</h1>
       <div>
         <p>Enter your user ID below:</p>
-        <form id="playerForm">
-          <label for="playerID">Player ID:</label>
-          <input
-            type="text"
-            id="userID"
-            class="inputField"
-            placeholder=""
-          />
-          <br />
-          <br />
-        </form>
+        <label for="playerID">Player ID:</label>
+        <input
+          type="text"
+          id="userID"
+          class="inputField"
+          placeholder="Enter User ID or number season for the leaderboards"
+        />
+        <br />
+        <br />
         <button
           class="optionsButton"
           id="getUserDataButton"
           type="submit"
           onclick="getUserData('full')"
+          title="returns the full json code, for any coders"
+        >
+          Get Full User Data
+        </button>
+        <button
+          class="optionsButton"
+          id="getUserDataSimple"
+          type="submit"
+          onclick="getUserData('simple')"
+          title="gets simplified version of a users profile"
         >
           Get User Data
         </button>
@@ -109,11 +117,21 @@
         <br />
         <button
           class="optionsButton"
-          id="getUserDataSimple"
+          id="getLeaderboards"
           type="submit"
-          onclick="getUserData('simple')"
+          onclick="getLeaderboards('simple')"
+          title="returns the leaderboards in readable format"
         >
-          Get User Data (simplified) (not working)
+          Get readable Leaderboards
+        </button>
+        <button
+          class="optionsButton"
+          id="getLeaderboards"
+          type="submit"
+          onclick="getLeaderboards('json')"
+          title="returns the leaderboards in json format, for any coders"
+        >
+          Get Full Leaderboards
         </button>
         <br />
         <br />
@@ -121,21 +139,33 @@
           class="optionsButton"
           id="getLeaderboards"
           type="submit"
-          onclick="getLeaderboards()"
+          onclick="getLeaderboards('json')"
+          title="returns the leaderboards in json format, for any coders"
         >
-          Get Leaderboards (not working)
+         Check Skill (Beta)
         </button>
-        <br />
       </div>
       <br />
     </div>
     <script>
+      function checkSkill() {
+        let user_id = document.getElementById('userID').value;
+        window.open(`/v2/account/p/checkSkill?id=${user_id}`);
+      }
       function getUserData(type) {
         let user_id = document.getElementById('userID').value;
         if (type == 'simple') {
-          window.open(`/v2/account/getSimpleProfile?id=${user_id}`);
+          window.open(`/v2/account/p/getProfile?id=${user_id}`);
         } else if (type == 'full') {
-          window.open(`/v2/account/getProfile?id=${user_id}`);
+          window.open(`/v2/account/json/getProfile?id=${user_id}`);
+        }
+      }
+      function getLeaderboards(type) {
+        let ssn = document.getElementById('userID').value;
+        if (type == 'simple') {
+          window.open(`/v2/p/getLeaderboards?ssn=${ssn}`);
+        } else if (type == 'json') {
+          window.open(`/v2/json/getLeaderboards?ssn=${ssn}`);
         }
       }
     </script>
