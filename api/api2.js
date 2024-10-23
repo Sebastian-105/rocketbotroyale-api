@@ -219,25 +219,26 @@ async function api() {
 
         let level = newContent.metadata.progress.level;
         let exp = newContent.metadata.progress.xp;
-        let winrate1 = played / wins
-        let kd1 = player_kills / deaths 
-        let winrate = winrate1.toFixed(2)
-        console.log(winrate)
-        let kd = kd1.toFixed(2)
-        console.log(kd)
+        let winrate1 = played / wins;
+        let kd1 = player_kills / deaths;
+        let winrate = winrate1.toFixed(2);
+        console.log(winrate);
+        let kd = kd1.toFixed(2);
+        console.log(kd);
         // Algorithm, hopefully, out of 10, this is written very primitively i know.
-        let kdSkill = ((kd * 2) + 2).toFixed(1);
-        console.log(`KD ${kdSkill}`)
-        let winrateSkill = (10 - winrate).toFixed(1)
-        console.log(`Winrate ${winrateSkill}`)
-        let best_rankSkill = (105 - rank) / 10
+        let kdSkill = (kd * 2 + 2).toFixed(1);
+        console.log(`KD ${kdSkill}`);
+        let winrateSkill = (10 - winrate).toFixed(1);
+        console.log(`Winrate ${winrateSkill}`);
+        let best_rankSkill = (105 - rank) / 10;
         if (best_rankSkill > 10) {
-          best_rankSkill = 10
+          best_rankSkill = 10;
         }
-        console.log(`Best rank ${best_rankSkill}`)
-        
-        let finalSkill = (best_rankSkill * 2.5) + (winrateSkill * 1.5) + (kdSkill * 1)
-        console.log(finalSkill)
+        console.log(`Best rank ${best_rankSkill}`);
+
+        let finalSkill =
+          best_rankSkill * 2.5 + winrateSkill * 1.5 + kdSkill * 1;
+        console.log(finalSkill);
 
         let contentFinal = `How it works:\nThis hopefully will semi-accurately guess an players skill based on their stats. Each stat is on a scale of 1-10, then I will average it out. But best rank is the most skill defining stat so it would mean more points. Total is out of 50\nTotal Score: ${finalSkill}`;
         res.write(contentFinal);
