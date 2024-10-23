@@ -230,7 +230,7 @@ async function api() {
         console.log(`KD ${kdSkill}`);
         let winrateSkill = (10 - winrate).toFixed(1);
         console.log(`Winrate ${winrateSkill}`);
-        let best_rankSkill = (105 - rank) / 10;
+        let best_rankSkill = ((1005 - rank) / 10)*1.5;
         if (best_rankSkill > 10) {
           best_rankSkill = 10;
         }
@@ -238,9 +238,10 @@ async function api() {
 
         let finalSkill =
           best_rankSkill * 2.5 + winrateSkill * 1.5 + kdSkill * 1;
-        console.log(finalSkill);
+        let finalSkill1 = finalSkill.toFixed(2)
+        console.log(finalSkill1);
 
-        let contentFinal = `How it works:\nThis hopefully will semi-accurately guess an players skill based on their stats. Each stat is on a scale of 1-10, then I will average it out. But best rank is the most skill defining stat so it would mean more points. Total is out of 50\nTotal Score: ${finalSkill}`;
+        let contentFinal = `How it works:\nThis hopefully will semi-accurately guess an players skill based on their stats. Each stat is on a scale of 1-10, then I will average it out. But best rank is the most skill defining stat so it would mean more points. Total is out of 50\nTotal Score: ${finalSkill1}`;
         res.write(contentFinal);
         res.end();
       }
