@@ -230,18 +230,22 @@ async function api() {
         console.log(`KD ${kdSkill}`);
         let winrateSkill = (10 - winrate).toFixed(1);
         console.log(`Winrate ${winrateSkill}`);
-        let best_rankSkill = ((1005 - rank) / 10)*1.5;
-        if (best_rankSkill > 10) {
-          best_rankSkill = 10;
+        let best_rankSkill = (100 - rank) / 10;
+        if (rank == 1) {
+          best_rankSkill = 15;
+        } else if (rank == 2) {
+          best_rankSkill = 13;
+        } else if (rank == 3) {
+          best_rankSkill = 11;
         }
+
         console.log(`Best rank ${best_rankSkill}`);
 
-        let finalSkill =
-          best_rankSkill * 2.5 + winrateSkill * 1.5 + kdSkill * 1;
-        let finalSkill1 = finalSkill.toFixed(2)
+        let finalSkill = best_rankSkill * 3 + winrateSkill * 2 + kdSkill * 1.5;
+        let finalSkill1 = finalSkill.toFixed(2);
         console.log(finalSkill1);
 
-        let contentFinal = `How it works:\nThis hopefully will semi-accurately guess an players skill based on their stats. Each stat is on a scale of 1-10, then I will average it out. But best rank is the most skill defining stat so it would mean more points. Total is out of 50\nTotal Score: ${finalSkill1}`;
+        let contentFinal = `How it works:\nThis hopefully will semi-accurately guess an players skill based on their stats. Each stat is on a scale of 1-10, then I will average it out. But best rank is the most skill defining stat so it would mean more points. If best rank exceeds 500, then it goes negative\n\n========================================\n\nUsername: ${display_name}\n\nTotal Score: ${finalSkill1}\n\nBreakdown:\nBest Rank: ${best_rankSkill}\nWinrate Skill: ${winrateSkill}\nKDR Skill: ${kdSkill}`;
         res.write(contentFinal);
         res.end();
       }
