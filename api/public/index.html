@@ -94,7 +94,12 @@
           Just enter in your user ID, and with that you can view your stats and
           your estimated skill level. Or you can enter in a certain season to
           view the top 50 in that season, (note: this only works with season
-          11-the most current season)
+          11-the most current season).
+        </p>
+        <p>
+          One last thing, say you don't know someone's user ID. You can just
+          input their friend code and click any option it will automatically
+          send you to a page that tell you the user ID
         </p>
         <hr style="width: 85%; border-radius: 15px; background-color: black" />
         <p>Enter your user ID below:</p>
@@ -162,16 +167,25 @@
     <script>
       function checkSkill() {
         let user_id = document.getElementById('userID').value;
-        window.open(`/v2/account/p/checkSkill?id=${user_id}`);
+          window.open(`/v2/account/p/checkSkill?id=${user_id}`);
       }
       function getUserData(type) {
         let user_id = document.getElementById('userID').value;
-        if (type == 'simple') {
-          window.open(`/v2/account/p/getProfile?id=${user_id}`);
-        } else if (type == 'full') {
-          window.open(`/v2/account/json/getProfile?id=${user_id}`);
+        if (user_id.length > 10) {
+          if (type == 'simple') {
+            window.open(`/v2/account/p/getProfile?id=${user_id}`);
+          } else if (type == 'full') {
+            window.open(`/v2/account/json/getProfile?id=${user_id}`);
+          }
+        } else if (user_id.length < 10) {
+          if (type == 'simple') {
+            window.open(`/v2/account/json/fcToID?fc=${user_id}`);
+          } else if (type == 'full') {
+            window.open(`/v2/account/json/fcToID?fc=${user_id}`);
+          }
         }
       }
+
       function getLeaderboards(type) {
         let ssn = document.getElementById('userID').value;
         if (type == 'simple') {

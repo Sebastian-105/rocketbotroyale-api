@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 3000;
+const port = 8080;
 const path = require('path');
 const fs = require('fs');
 
@@ -15,6 +15,39 @@ let test_password = 'password';
 const baseURL = 'https://dev-nakama.winterpixel.io/v2';
 
 // Get profile
+async function fcToID(fc, token) {
+  const data = `\"{\\\"friend_code\\\":\\\"${fc}\\\"}\"`;
+  console.log('Sending request with data:', data);
+
+  return await fetch(
+    `https://dev-nakama.winterpixel.io/v2/rpc/winterpixel_query_user_id_for_friend_code`,
+    {
+      headers: {
+        accept: 'application/json',
+        'accept-language': 'en-US,en;q=0.9',
+        authorization: `Bearer ${token}`,
+        priority: 'u=1, i',
+        'sec-ch-ua': '"Chromium";v="127", "Not)A;Brand";v="99"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Linux"',
+        'sec-fetch-dest': 'empty',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-site': 'same-site',
+        Referer: 'https://rocketbotroyale.winterpixel.io/',
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
+      },
+      body: data,
+      method: 'POST',
+    },
+  )
+    .then(function (res) {
+      console.log('Response status:', res.status);
+      return res.json();
+    })
+    .catch((err) => {
+      console.error('Fetch error:', err);
+    });
+}
 async function getProfile(id, token) {
   return await fetch(`${baseURL}/rpc/rpc_get_users_with_profile`, {
     headers: {
@@ -128,6 +161,22 @@ async function api() {
       const token = await updateToken(); // Assume updateToken fetches the required token
       const playerData = await getProfile(id, token); // Assume getProfile fetches user data
       res.json(playerData);
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to fetch player data' });
+    }
+  });
+  app.get('/v2/account/json/fcToID', async (req, res) => {
+    const { fc } = req.query; // Get playerID from query params
+
+    if (!fc) {
+      return res.status(400).json({ error: 'friend code is required' });
+    }
+
+    const token = await updateToken(); // Assume updateToken fetches the required token
+    const playerData = await fcToID(fc, token);
+    try {
+      let newData = JSON.parse(JSON.parse(JSON.stringify(playerData)).payload);
+      res.json(newData);
     } catch (err) {
       res.status(500).json({ error: 'Failed to fetch player data' });
     }
@@ -327,7 +376,7 @@ async function api() {
 }
 if (require.main === module) {
   api();
-  console.log('This only runs when file1.js is executed directly');
+  console.log('This only runs when set file is is executed directly');
 }
 
 module.exports = { getProfile, updateToken };
