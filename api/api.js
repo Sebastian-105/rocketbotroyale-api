@@ -12,6 +12,8 @@ const { json } = require('express/lib/response');
 const { process_params } = require('express/lib/router');
 let test_email = 'testsubject105@gmail.com';
 let test_password = 'password';
+let test_id = '52839799-0bad-4786-879b-8d5d9924d5cb'
+
 const baseURL = 'https://dev-nakama.winterpixel.io/v2';
 
 // Get profile
@@ -71,7 +73,7 @@ async function getProfile(id, token) {
   });
 }
 async function updateToken() {
-  return await fetch(`${baseURL}/account/authenticate/email?create=false&`, {
+  return await fetch(`https://dev-nakama.winterpixel.io/v2/account/authenticate/custom?create=true&`, {
     headers: {
       accept: 'application/json',
       'accept-language': 'en-US,en;q=0.9',
@@ -86,7 +88,7 @@ async function updateToken() {
       Referer: 'https://rocketbotroyale.winterpixel.io/',
       'Referrer-Policy': 'strict-origin-when-cross-origin',
     },
-    body: `{\"email\":\"${test_email}\",\"password\":\"${test_password}\",\"vars\":{\"client_version\":\"66\",\"platform\":\"HTML5\"}}`,
+    body: `{\"email\":\"${test_email}\",\"password\":\"${test_password}\",\"id\":\"${test_id}\",\"vars\":{\"client_version\":\"66\",\"platform\":\"HTML5\"}}`,
     method: 'POST',
   })
     .then(function (res) {
