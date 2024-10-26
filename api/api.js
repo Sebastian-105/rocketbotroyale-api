@@ -73,32 +73,36 @@ async function getProfile(id, token) {
   });
 }
 async function updateToken() {
-  return await fetch(`https://dev-nakama.winterpixel.io/v2/account/authenticate/custom?create=true&`, {
-    headers: {
-      accept: 'application/json',
-      'accept-language': 'en-US,en;q=0.9',
-      authorization: 'Basic OTAyaXViZGFmOWgyZTlocXBldzBmYjlhZWIzOTo=',
-      priority: 'u=1, i',
-      'sec-ch-ua': '"Chromium";v="127", "Not)A;Brand";v="99"',
-      'sec-ch-ua-mobile': '?0',
-      'sec-ch-ua-platform': '"Linux"',
-      'sec-fetch-dest': 'empty',
-      'sec-fetch-mode': 'cors',
-      'sec-fetch-site': 'same-site',
-      Referer: 'https://rocketbotroyale.winterpixel.io/',
-      'Referrer-Policy': 'strict-origin-when-cross-origin',
+  return await fetch(
+    `https://dev-nakama.winterpixel.io/v2/account/authenticate/custom?create=true&`,
+    {
+      headers: {
+        accept: 'application/json',
+        'accept-language': 'en-US,en;q=0.9',
+        authorization: 'Basic OTAyaXViZGFmOWgyZTlocXBldzBmYjlhZWIzOTo=',
+        priority: 'u=1, i',
+        'sec-ch-ua': '"Chromium";v="127", "Not)A;Brand";v="99"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Linux"',
+        'sec-fetch-dest': 'empty',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-site': 'same-site',
+        Referer: 'https://rocketbotroyale.winterpixel.io/',
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
+      },
+      body: `{"email":"${test_email}","password":"${test_password}","id":"${test_id}","vars":{"client_version":"67","platform":"HTML5"}}`,
+      method: 'POST',
     },
-    body: `{\"email\":\"${test_email}\",\"password\":\"${test_password}\",\"id\":\"${test_id}\",\"vars\":{\"client_version\":\"66\",\"platform\":\"HTML5\"}}`,
-    method: 'POST',
-  })
+  )
     .then(function (res) {
-      // console.log(res);
       return res.json();
     })
     .then(function (json) {
+      console.log(json);
       return json['token'];
     });
 }
+
 
 async function getStatus(id, token) {
   const token1 = await updateToken();
@@ -256,9 +260,7 @@ async function api() {
         let newContent = JSON.parse(
           JSON.parse(JSON.stringify(content)).payload,
         )[0];
-        let ownerID = newContent.user_id;
-        let skin = newContent.metadata.skin;
-        let friendCode = newContent.metadata.friend_code;
+       
         let display_name = newContent.display_name;
         let wins = newContent.metadata.stats.games_won;
         let played = newContent.metadata.stats.games_played;
