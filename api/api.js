@@ -12,7 +12,7 @@ const { json } = require('express/lib/response');
 const { process_params } = require('express/lib/router');
 let test_email = 'testsubject105@gmail.com';
 let test_password = 'password';
-let test_id = '52839799-0bad-4786-879b-8d5d9924d5cb'
+let test_id = '52839799-0bad-4786-879b-8d5d9924d5cb';
 
 const baseURL = 'https://dev-nakama.winterpixel.io/v2';
 
@@ -102,7 +102,6 @@ async function updateToken() {
       return json['token'];
     });
 }
-
 
 async function getStatus(id, token) {
   const token1 = await updateToken();
@@ -256,11 +255,13 @@ async function api() {
         const content = await getProfile(userID, token);
         let rawContent = JSON.parse(JSON.stringify(content)).payload;
         // console.log(`Raw content:${rawContent}`);
+        try {
+          newContent = JSON.parse(
+            JSON.parse(JSON.stringify(content)).payload,
+          )[0];
+        } catch (error) {
+        }
 
-        let newContent = JSON.parse(
-          JSON.parse(JSON.stringify(content)).payload,
-        )[0];
-       
         let display_name = newContent.display_name;
         let wins = newContent.metadata.stats.games_won;
         let played = newContent.metadata.stats.games_played;
@@ -275,32 +276,30 @@ async function api() {
         let winrate1 = played / wins;
         let kd1 = player_kills / deaths;
         let winrate = winrate1.toFixed(2);
-        console.log(winrate);
         let kd = kd1.toFixed(2);
-        console.log(kd);
-        // Algorithm, hopefully, out of 10, this is written very primitively i know.
-        let kdSkill = (kd * 2 + 2).toFixed(1);
+
+        let kdSkill = kd * kd + 2;
         console.log(`KD ${kdSkill}`);
-        let winrateSkill = (10 - winrate).toFixed(1);
+        let winrateSkill = 15 - winrate;
         console.log(`Winrate ${winrateSkill}`);
-        let best_rankSkill = (100 - rank) / 10;
+        let best_rankSkill = (1000 - rank * rank) / 100;
         if (rank == 1) {
           best_rankSkill = 15;
         } else if (rank == 2) {
           best_rankSkill = 13;
         } else if (rank == 3) {
-          best_rankSkill = 11;
+          best_rankSkill = 10;
         }
 
         console.log(`Best rank ${best_rankSkill}`);
-        let best_rankSkill1 = best_rankSkill * 3;
-        let winrateSkill1 = winrateSkill * 2.5;
-        let kdSkill1 = kdSkill * 1.5;
-        let finalSkill = best_rankSkill1 + winrateSkill1 + kdSkill1;
-        let finalSkill1 = finalSkill.toFixed(2);
-        console.log(finalSkill1);
+        let best_rankSkill1 = Math.round(best_rankSkill * 3 * 100) / 100;
+        let winrateSkill1 = Math.round(winrateSkill * 2.5 * 100) / 100;
+        let kdSkill1 = Math.round(kdSkill * 2 * 100) / 100;
+        let finalSkill =
+          Math.round((best_rankSkill1 + winrateSkill1 + kdSkill1) * 100) / 100;
+        console.log(finalSkill);
 
-        let contentFinal = `How it works:\nThis hopefully will semi-accurately guess an players skill based on their stats. Each stat is on a scale of 1-10, then I will average it out. But best rank is the most skill defining stat so it would mean more points. If best rank exceeds 500, then it goes negative\nAs of now there is no cap for scoring, but 77 was the highest I could find, see if you can find anyone with a higher score (d02c1463-5960-46e2-8e6d-efafb1319db6)\n\n========================================\n\nUsername: ${display_name}\n\nTotal Score: ${finalSkill1}\n\nBreakdown:\nBest Rank Points: ${best_rankSkill1} | Best Rank: ${rank}\nWinrate Points: ${winrateSkill1} | Winrate: ${winrate}\nKDR Points: ${kdSkill1} | KDR ${kd}`;
+        let contentFinal = `How it works:\nThis hopefully will semi-accurately guess an players skill based on their stats. Each stat is on a scale of 1-10, then I will average it out. But best rank is the most skill defining stat so it would mean more points. If best rank exceeds 1000, then it goes negative\nAs of now there is no cap for scoring, but 117.76 was the highest I could find, see if you can find anyone with a higher score (d02c1463-5960-46e2-8e6d-efafb1319db6)\n\n========================================\n\nUsername: ${display_name}\n\nTotal Score: ${finalSkill}\n\nBreakdown:\nBest Rank Points: ${best_rankSkill1} | Best Rank: ${rank}\nWinrate Points: ${winrateSkill1} | Winrate: ${winrate}\nKDR Points: ${kdSkill1} | KDR ${kd}`;
         res.write(contentFinal);
         res.end();
       }
