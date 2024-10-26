@@ -293,12 +293,14 @@ async function api() {
         }
 
         console.log(`Best rank ${best_rankSkill}`);
-
-        let finalSkill = best_rankSkill * 3 + winrateSkill * 2 + kdSkill * 1.5;
+        let best_rankSkill1 = best_rankSkill * 3;
+        let winrateSkill1 = winrateSkill * 2.5;
+        let kdSkill1 = kdSkill * 1.5;
+        let finalSkill = best_rankSkill1 + winrateSkill1 + kdSkill1;
         let finalSkill1 = finalSkill.toFixed(2);
         console.log(finalSkill1);
 
-        let contentFinal = `How it works:\nThis hopefully will semi-accurately guess an players skill based on their stats. Each stat is on a scale of 1-10, then I will average it out. But best rank is the most skill defining stat so it would mean more points. If best rank exceeds 500, then it goes negative\nAs of now there is no cap for scoring, but 77 was the highest I could find, see if you can find anyone with a higher score (d02c1463-5960-46e2-8e6d-efafb1319db6)\n\n========================================\n\nUsername: ${display_name}\n\nTotal Score: ${finalSkill1}\n\nBreakdown:\nBest Rank Points: ${best_rankSkill} | Best Rank: ${rank}\nWinrate Points: ${winrateSkill} | Winrate: ${winrate}\nKDR Points: ${kdSkill} | KDR ${kd}`;
+        let contentFinal = `How it works:\nThis hopefully will semi-accurately guess an players skill based on their stats. Each stat is on a scale of 1-10, then I will average it out. But best rank is the most skill defining stat so it would mean more points. If best rank exceeds 500, then it goes negative\nAs of now there is no cap for scoring, but 77 was the highest I could find, see if you can find anyone with a higher score (d02c1463-5960-46e2-8e6d-efafb1319db6)\n\n========================================\n\nUsername: ${display_name}\n\nTotal Score: ${finalSkill1}\n\nBreakdown:\nBest Rank Points: ${best_rankSkill1} | Best Rank: ${rank}\nWinrate Points: ${winrateSkill1} | Winrate: ${winrate}\nKDR Points: ${kdSkill1} | KDR ${kd}`;
         res.write(contentFinal);
         res.end();
       }
