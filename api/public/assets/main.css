@@ -1,15 +1,17 @@
 /* General body styling */
-body {
-  font-family: 'Baloo 2', cursive;
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap');
 
+body {
+  font-family: 'Baloo 2';
   margin: 0;
   padding: 0;
   color: #ffffff;
-  background-image: url('https://winterpixelcheats.com/ui/background_image_light_theme.png');
+  background-image: url('/assets/background.png');
   background-repeat: repeat;
   background-size: auto;
   animation: moveBackground 10s linear infinite;
-  text-align: center; /* Center all text and images */
+  text-align: center;
+  /* Center all text and images */
   color: white;
   display: flex;
   flex-direction: column;
@@ -24,6 +26,7 @@ body {
   0% {
     background-position: 0 0;
   }
+
   100% {
     background-position: 98px -100px;
   }
@@ -31,13 +34,17 @@ body {
 
 .content {
   width: 90%;
-  background-color: #252525;
+  background-image: url('/assets/background_dark.png');
+  background-repeat: repeat;
+  background-size: auto;
+  animation: moveBackground 10s linear infinite;
   position: sticky;
   height: auto;
   border-radius: 50px;
   border: solid black 5px;
   outline: solid white 8px;
 }
+
 /* Filter options styling */
 .filterOptions {
   width: 20px;
@@ -47,8 +54,10 @@ body {
 
 /* Input styling */
 #userID {
-  width: 500px;
-  height: 50px;
+  width: 750px;
+  max-width: 1000px;
+  height: 200px;
+  resize: horizontal;
   padding: 5px;
   border-radius: 5px;
   font-size: 20px;

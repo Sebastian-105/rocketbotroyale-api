@@ -248,8 +248,6 @@ async function api() {
       async function skillCheck(userID) {
         let token = await updateToken();
         const content = await getProfile(userID, token);
-        let rawContent = JSON.parse(JSON.stringify(content)).payload;
-        // console.log(`Raw content:${rawContent}`);
 
         let newContent = JSON.parse(
           JSON.parse(JSON.stringify(content)).payload,

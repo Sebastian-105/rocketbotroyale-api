@@ -5,88 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>105 | Sebastian</title>
     <!-- Link the external CSS file -->
-    <link rel="stylesheet" href="./assets/main.css" />
+    <link rel="stylesheet" href="/assets/main.css" />
   </head>
   <style>
-    /* General body styling */
-    @import('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap')
-    body {
-      font-family: 'Baloo 2', monospace;
-
-      margin: 0;
-      padding: 0;
-      color: #ffffff;
-      background-image: url('https://winterpixelcheats.netlify.app/ui/background_image_light_theme.png');
-      background-repeat: repeat;
-      background-size: auto;
-      animation: moveBackground 10s linear infinite;
-      text-align: center; /* Center all text and images */
-      color: white;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin: auto;
-      padding: 50px;
-      font-weight: bolder;
-    }
-
-    @keyframes moveBackground {
-      0% {
-        background-position: 0 0;
-      }
-      100% {
-        background-position: 98px -100px;
-      }
-    }
-
-    .content {
-      width: 90%;
-      background-color: #252525;
-      position: sticky;
-      height: auto;
-      border-radius: 50px;
-      border: solid black 5px;
-      outline: solid white 8px;
-    }
-    /* Filter options styling */
-    .filterOptions {
-      width: 20px;
-      height: 20px;
-      border-radius: 15px;
-    }
-
-    /* Input styling */
-    #userID {
-      width: 500px;
-      height: 50px;
-      padding: 5px;
-      border-radius: 5px;
-      font-size: 20px;
-    }
-
-    /* Button styling */
-    .optionsButton {
-      margin-bottom: 10px;
-      padding: 5px;
-      border-radius: 15px;
-      min-width: 200px;
-      border: solid 1px black;
-      background-color: #00a2ff;
-      border: none;
-      cursor: pointer;
-      width: auto;
-    }
-
-    .optionsButton:hover {
-      background-color: #0078bd;
-    }
+    
   </style>
+
   <body>
+
     <div class="content">
+    <img src="/assets/community_site_image_2.png" style="height:100px;">
       <h1>105 | Sebastian</h1>
       <div>
-        <h3>What is this?</h3>
+        <a href="/pages/index.html"></a><h2 title="see full docs here">What is this?</h2></a>
         <p>
           This website is here for anyone to check a bunch of things in
           rocketbotroyale
@@ -94,27 +25,42 @@
         <p>
           Just enter in your user ID, and with that you can view your stats and
           your estimated skill level. Or you can enter in a certain season to
-          view the top 50 in that season, (note: this only works with season
-          11-the most current season).
+          view the top 50 in that season (note: this only works with season
+          11 to the most current season).
         </p>
         <p>
-          You can also check my code to see how good you are, this code just does some simple math to get your skill based on your stats. Keep in mind this isn't always accurate, and that some players are better than their stats show, whilst others are worse.
+          You can also check my code to see how good you are, this code just
+          does some simple math to get your skill based on your stats. Keep in
+          mind this isn't always accurate, and that some players are better than
+          their stats show, whilst others are worse.
         </p>
-        <strong style="color: #ff3333;"><h3>IF YOU ENTER IN YOUR USER ID WRONG IN CHECK SKILL IT BREAKS FOR A BIT</h3></strong>
+        <strong style="color: #ff3333">
+          <h3>
+            IF YOU ENTER IN YOUR USER ID WRONG IN CHECK SKILL IT BREAKS FOR A
+            BIT
+          </h3>
+        </strong>    
         <p>
-          One last thing, say you don't know someone's user ID. You can just
-          input their friend code and click any option it will automatically
-          send you to a page that tell you the user ID
+
         </p>
+        <p>
+          Pressing the get all placement button with a desired placment will get everyone that has gotten that placement, (with duplicates).
+        </p>
+        <p>
+          Pressing the Search user will find every user in every season that has gotten the top 50, and return it. It also has duplicates.
+        </p>
+        <h2>To enter in multiple ids/seasons, seperate them with spaces</h2>
         <hr style="width: 85%; border-radius: 15px; background-color: black" />
-        <p>Enter your user ID below:</p>
-        <label for="playerID">Player ID:</label>
-        <input
-          type="text"
+        <h1>Enter your user ID below:</h1>
+        <textarea
+          rows="50"
+          cols="33"
           id="userID"
           class="inputField"
+          minlength="1"
+          maxlength="1000"
           placeholder="Enter User ID or number season for the leaderboards"
-        />
+        ></textarea>
         <br />
         <br />
         <button
@@ -135,8 +81,26 @@
         >
           Get User Data
         </button>
+        <button
+          class="optionsButton"
+          id="getUser"
+          type="submit"
+          onclick="getUser()"
+          title="returns the leaderboards in json format, for any coders"
+        >
+          Search user
+        </button>
         <br />
         <br />
+        <button
+          class="optionsButton"
+          id="getLeaderboards"
+          type="submit"
+          onclick="getLeaderboards('json')"
+          title="returns the leaderboards in json format, for any coders"
+        >
+          Get Full Leaderboards
+        </button>
         <button
           class="optionsButton"
           id="getLeaderboards"
@@ -150,10 +114,10 @@
           class="optionsButton"
           id="getLeaderboards"
           type="submit"
-          onclick="getLeaderboards('json')"
-          title="returns the leaderboards in json format, for any coders"
+          onclick="getPlacements()"
+          title="Returns all set placements from every season"
         >
-          Get Full Leaderboards
+          Get all placements
         </button>
         <br />
         <br />
@@ -166,13 +130,36 @@
         >
           Check Skill (Beta)
         </button>
+        <button
+          class="optionsButton"
+          id="getLeaderboards"
+          type="submit"
+          onclick="convert()"
+          title="returns the leaderboards in json format, for any coders"
+        >
+          Friend code to User id
+        </button>
+        <br />
+        <br />
       </div>
       <br />
     </div>
     <script>
+      function getPlacements() {
+        let res = document.getElementById('userID').value;
+        window.open(`/v2/getAllPlacements?place=${res}`);
+      }
+      function getUser() {
+        let res = document.getElementById('userID').value;
+        if (res.includes('-')) {
+          window.open(`/v2/getAllTop50?userID=${res}`);
+        } else {
+          window.open(`/v2/getAllTop50?name=${res}`);
+        }
+      }
       function checkSkill() {
         let user_id = document.getElementById('userID').value;
-          window.open(`/v2/account/p/checkSkill?id=${user_id}`);
+        window.open(`/v2/account/p/checkSkill?id=${user_id}`);
       }
       function getUserData(type) {
         let user_id = document.getElementById('userID').value;
@@ -182,15 +169,16 @@
           } else if (type == 'full') {
             window.open(`/v2/account/json/getProfile?id=${user_id}`);
           }
-        } else if (user_id.length < 10) {
-          if (type == 'simple') {
+        } 
+      }
+      function convert() {
+        let user_id = document.getElementById('userID').value;
+        if (type == 'simple') {
             window.open(`/v2/account/json/fcToID?fc=${user_id}`);
           } else if (type == 'full') {
             window.open(`/v2/account/json/fcToID?fc=${user_id}`);
           }
-        }
       }
-
       function getLeaderboards(type) {
         let ssn = document.getElementById('userID').value;
         if (type == 'simple') {
