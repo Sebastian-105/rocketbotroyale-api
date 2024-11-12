@@ -1,0 +1,114 @@
+/* General body styling */
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap");
+
+body {
+  font-family: "Baloo 2";
+  margin: 0;
+  padding: 0;
+  color: #ffffff;
+  background-image: url("./bg_blue_2.png");
+  background-repeat: repeat;
+  background-size: auto;
+  animation: moveBackground 10s linear infinite;
+  text-align: center;
+  /* Center all text and images */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  padding: 50px;
+  font-weight: bolder;
+}
+
+@keyframes moveBackground {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 98px -100px;
+  }
+}@keyframes moveBackground1 {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: -98px 100px;
+  }
+}
+
+.content {
+  width: 90%;
+  background-image: url("./background_dark.png");
+  background-repeat: repeat;
+  background-size: auto;
+  animation: moveBackground 10s linear infinite;
+  position: relative;
+  height: auto;
+  border-radius: 50px;
+  border: solid black 5px;
+  outline: solid white 8px;
+}
+
+.content1 {
+  width: 90%;
+  background-image: url('./background.png');
+  background-repeat: repeat;
+  animation: moveBackground1 15s linear infinite;
+
+  /* background: linear-gradient(
+    0deg,
+    rgba(0, 78, 166, 1) 0%,
+    rgba(0, 89, 188, 1) 50%,
+    rgba(0, 98, 201, 1) 100%
+  ); */
+osition: relative;
+  height: auto;
+  border-radius: 15px;
+  border: solid black 5px;
+  outline: solid white 8px;
+}
+.content1 .exit {
+  position: absolute;
+  top: -25px;
+  right: -25px;
+  cursor: pointer;
+}
+
+/* Filter options styling */
+.filterOptions {
+  width: 20px;
+  height: 20px;
+  border-radius: 15px;
+}
+
+/* Input styling */
+#userID {
+  width: 750px;
+  max-width: 1000px;
+  height: 200px;
+  resize: horizontal;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+/* Button styling */
+.optionsButton {
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 15px;
+  min-width: 200px;
+  border: solid 1px black;
+  background-color: #00a2ff;
+  border: none;
+  cursor: pointer;
+  width: auto;
+}
+
+.optionsButton:hover {
+  background-color: #0078bd;
+}
