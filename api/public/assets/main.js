@@ -28,3 +28,7 @@ function showContent(title, message) {
     menu.style.display = "block";
   }, 200);
 }
+setTimeout(() => {
+  showContent('heading','message')
+  showLoader();
+}, 3000);
