@@ -1,16 +1,16 @@
 /* General body styling */
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap");
 
 * {
-  cursor: url('./cursor_normal.png'), auto !important;
-  font-family: 'Baloo 2';
+  cursor: url("./cursor_normal.png"), auto !important;
+  font-family: "Baloo 2";
   font-weight: 600;
 }
 body {
   margin: 0;
   padding: 0;
   color: #ffffff;
-  background-image: url('./bg_blue_2.png');
+  background-image: url("./bg_blue_2.png");
   background-repeat: repeat;
   background-size: auto;
   animation: moveBackground 10s linear infinite;
@@ -83,19 +83,19 @@ body {
 }
 @keyframes loading2 {
   0% {
-    content: '   ';
+    content: "   ";
   }
   25% {
-    content: '.  ';
+    content: ".  ";
   }
   50% {
-    content: '.. ';
+    content: ".. ";
   }
   75% {
-    content: '...';
+    content: "...";
   }
   100% {
-    content: '   ';
+    content: "   ";
   }
 }
 #loadingFont {
@@ -104,7 +104,7 @@ body {
   width: 500px;
 }
 #loadingFont::after {
-  content: '   ';
+  content: "   ";
   animation: loading2 2s linear infinite forwards;
 }
 .loader {
@@ -135,7 +135,7 @@ textarea {
 .content {
   z-index: 4;
   width: 90%;
-  background-image: url('./background_dark.png');
+  background-image: url("./background_dark.png");
   background-repeat: repeat;
   background-size: auto;
   animation: moveBackground 10s linear infinite;
@@ -150,7 +150,7 @@ textarea {
   z-index: 7;
   display: none;
   width: 90%;
-  background-image: url('./background.png');
+  background-image: url("./background.png");
   background-repeat: repeat;
   animation: moveBackground1 15s linear infinite;
   /* background: linear-gradient(
