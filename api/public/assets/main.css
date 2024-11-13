@@ -1,12 +1,16 @@
 /* General body styling */
 @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap');
 
-body {
+* {
+  cursor: url('./cursor_normal.png'), auto !important;
   font-family: 'Baloo 2';
+  font-weight: 600;
+}
+body {
   margin: 0;
   padding: 0;
   color: #ffffff;
-  background-image: url('/assets/background.png');
+  background-image: url('./bg_blue_2.png');
   background-repeat: repeat;
   background-size: auto;
   animation: moveBackground 10s linear infinite;
@@ -22,6 +26,26 @@ body {
   font-weight: bolder;
 }
 
+@keyframes hideElement {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+@keyframes showElement {
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 @keyframes moveBackground {
   0% {
     background-position: 0 0;
@@ -31,25 +55,128 @@ body {
     background-position: 98px -100px;
   }
 }
+@keyframes moveBackground1 {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: -98px 100px;
+  }
+}
+@keyframes loader {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(0.8) rotate(90);
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+  }
+  75% {
+    transform: scale(0.8) rotate(270);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+@keyframes loading2 {
+  0% {
+    content: '   ';
+  }
+  25% {
+    content: '.  ';
+  }
+  50% {
+    content: '.. ';
+  }
+  75% {
+    content: '...';
+  }
+  100% {
+    content: '   ';
+  }
+}
+#loadingFont {
+  margin-top: 5px;
+  letter-spacing: 2px;
+  width: 500px;
+}
+#loadingFont::after {
+  content: '   ';
+  animation: loading2 2s linear infinite forwards;
+}
+.loader {
+  z-index: 6;
+  width: 50px;
+  height: 50px;
+  animation: loader 2s linear infinite both;
+}
+textarea {
+  cursor: url(./curson_insert.png), auto !important;
+}
+.loaderBackground {
+  opacity: 0.9;
+  display: none; /* Should be flex */
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+  width: 100vw;
+  height: 100vh;
+  background-color: #252525;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
 
 .content {
+  z-index: 4;
   width: 90%;
-  background-image: url('/assets/background_dark.png');
+  background-image: url('./background_dark.png');
   background-repeat: repeat;
   background-size: auto;
   animation: moveBackground 10s linear infinite;
-  position: sticky;
+  position: relative;
   height: auto;
   border-radius: 50px;
   border: solid black 5px;
   outline: solid white 8px;
 }
 
+.content1 {
+  z-index: 7;
+  display: none;
+  width: 90%;
+  background-image: url('./background.png');
+  background-repeat: repeat;
+  animation: moveBackground1 15s linear infinite;
+  /* background: linear-gradient(
+    0deg,
+    rgba(0, 78, 166, 1) 0%,
+    rgba(0, 89, 188, 1) 50%,
+    rgba(0, 98, 201, 1) 100%
+  ); */
+  position: relative;
+  height: auto;
+  border-radius: 15px;
+  border: solid black 5px;
+  outline: solid white 8px;
+}
+.content1 .exit {
+  position: absolute;
+  top: -25px;
+  right: -25px;
+  cursor: pointer;
+}
+
 /* Filter options styling */
 .filterOptions {
   width: 20px;
   height: 20px;
-  border-radius: 15px;
+  border-radius: 5;
 }
 
 /* Input styling */

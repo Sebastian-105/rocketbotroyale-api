@@ -4,20 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>105 | Sebastian</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Include Axios -->
     <link rel="stylesheet" href="./assets/main.css" />
   </head>
-  <style></style>
 
   <body>
+    <div class="loaderBackground">
+      <figure>
+        <img class="loader" src="./assets/drag-to-aim-lg.png" />
+        <figcaption id="loadingFont">Loading</figcaption>
+      </figure>
+    </div>
     <div
       class="content1"
-      style="
-        position: fixed;
-        z-index: 50;
-        display: block;
-        top: 50px;
-        min-height: 500px;
-      "
+      style="position: fixed; z-index: 50; top: 50px; min-height: 500px"
     >
       <svg
         class="exit"
@@ -35,8 +36,8 @@
           stroke-width="2"
           x="3"
           y="3"
-          rx="15"
-          ry="15"
+          rx="5"
+          ry="5"
         />
 
         <line
@@ -59,7 +60,9 @@
           stroke-linecap="round"
         />
       </svg>
-      <h1></h1>
+      <h1 id="title"></h1>
+      <hr />
+      <div id="root"></div>
     </div>
     <div class="content">
       <img src="./assets/community_site_image_2.png" style="height: 100px" />
@@ -213,9 +216,9 @@
       function getUserData(type) {
         let user_id = document.getElementById("userID").value;
         if (user_id.length > 10) {
-          if (type == "simple") {
+          if (type === "simple") {
             window.open(`./v2/account/p/getProfile?id=${user_id}`);
-          } else if (type == "full") {
+          } else if (type === "full") {
             window.open(`./v2/account/json/getProfile?id=${user_id}`);
           }
         }
