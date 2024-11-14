@@ -1,0 +1,6 @@
+name = "main"
+type = "javascript"
+
+account_id = "7d381da7b97201592e144e85d7efd3ec"
+workers_dev = true
+compatibility_flags = []

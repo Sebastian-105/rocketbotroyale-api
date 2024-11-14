@@ -9,7 +9,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 const { json } = require('express/lib/response');
 const { process_params } = require('express/lib/router');
 let test_email = 'testsubject105@gmail.com';
@@ -242,10 +241,11 @@ async function api() {
       });
     }
   });
-  app.get('/v2/getAllTop50', async (req, res) => { //Search user
+  app.get('/v2/getAllTop50', async (req, res) => {
+    //Search user
     const allSSN = [
-      10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
-      30, 31, 32, 33, 34, 35, 36
+      10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
+      29, 30, 31, 32, 33, 34, 35, 36,
     ];
     const { name, userID } = req.query;
 
@@ -432,8 +432,6 @@ async function api() {
     try {
       async function getProfileP(userID) {
         let token = await updateToken();
-        // let rawContent = JSON.parse(JSON.stringify(content)).payload;
-        // console.log(`Raw content:${rawContent}`);
         for (let index = 0; index < userID.length; index++) {
           const element = userID[index];
           const content = await getProfile(element, token);

@@ -1,1 +1,3 @@
 ./api/userID.json
+# Local Netlify folder
+.netlify

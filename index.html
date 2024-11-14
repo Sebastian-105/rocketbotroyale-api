@@ -118,7 +118,7 @@
           class="optionsButton"
           id="getUserDataButton"
           type="submit"
-          onclick="getUserData('full')"
+          onclick="openFullProfile()"
           title="returns the full json code, for any coders"
         >
           Get Full User Data
@@ -127,7 +127,7 @@
           class="optionsButton"
           id="getUserDataSimple"
           type="submit"
-          onclick="getUserData('simple')"
+          onclick="openSimpleProfile()"
           title="gets simplified version of a users profile"
         >
           Get User Data
@@ -147,7 +147,7 @@
           class="optionsButton"
           id="getLeaderboards"
           type="submit"
-          onclick="getLeaderboards('json')"
+          onclick="openJsonLeaderboards()"
           title="returns the leaderboards in json format, for any coders"
         >
           Get Full Leaderboards
@@ -156,7 +156,7 @@
           class="optionsButton"
           id="getLeaderboards"
           type="submit"
-          onclick="getLeaderboards('simple')"
+          onclick="openSimpleLeaderboards()"
           title="returns the leaderboards in readable format"
         >
           Get readable Leaderboards
@@ -195,49 +195,44 @@
       </div>
       <br />
     </div>
-    <script src="./assets/main.js"></script>
     <script>
       function getPlacements() {
-        let res = document.getElementById("userID").value;
+        let res = document.getElementById('userID').value;
         window.open(`./v2/getAllPlacements?place=${res}`);
       }
       function getUser() {
-        let res = document.getElementById("userID").value;
-        if (res.includes("-")) {
+        let res = document.getElementById('userID').value;
+        if (res.includes('-')) {
           window.open(`./v2/getAllTop50?userID=${res}`);
         } else {
           window.open(`./v2/getAllTop50?name=${res}`);
         }
       }
       function checkSkill() {
-        let user_id = document.getElementById("userID").value;
-        window.open(`./v2/account/p/checkSkill/index.html?id=${user_id}`);
+        let user_id = document.getElementById('userID').value;
+        window.open(`./v2/account/p/checkSkill/?id=${user_id}`);
       }
-      function getUserData(type) {
-        let user_id = document.getElementById("userID").value;
-        if (user_id.length > 10) {
-          if (type === "simple") {
-            window.open(`./v2/account/p/getProfile?id=${user_id}`);
-          } else if (type === "full") {
-            window.open(`./v2/account/json/getProfile?id=${user_id}`);
-          }
-        }
+      function openSimpleProfile() {
+        let user_id = document.getElementById('userID').value;
+        window.open(`./v2/account/p/getProfile?id=${user_id}`);
+      }
+
+      function openFullProfile() {
+        let user_id = document.getElementById('userID').value;
+        window.open(`./v2/account/json/getProfile?id=${user_id}`);
       }
       function convert() {
-        let user_id = document.getElementById("userID").value;
-        if (type == "simple") {
-          window.open(`./v2/account/json/fcToID?fc=${user_id}`);
-        } else if (type == "full") {
-          window.open(`./v2/account/json/fcToID?fc=${user_id}`);
-        }
+        let user_id = document.getElementById('userID').value;
+        window.open(`./v2/account/json/fcToID?fc=${user_id}`);
       }
-      function getLeaderboards(type) {
-        let ssn = document.getElementById("userID").value;
-        if (type == "simple") {
-          window.open(`./v2/p/getLeaderboards?ssn=${ssn}`);
-        } else if (type == "json") {
-          window.open(`./v2/json/getLeaderboards?ssn=${ssn}`);
-        }
+      function openSimpleLeaderboards() {
+        let ssn = document.getElementById('userID').value;
+        window.open(`./v2/p/getLeaderboards?ssn=${ssn}`);
+      }
+
+      function openJsonLeaderboards() {
+        let ssn = document.getElementById('userID').value;
+        window.open(`./v2/json/getLeaderboards?ssn=${ssn}`);
       }
     </script>
     <script src="./assets/main.js"></script>
