@@ -1,14 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 8000;
+const port = 8080;
 const path = require('path');
 const fs = require('fs');
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 const { json } = require('express/lib/response');
 const { process_params } = require('express/lib/router');
@@ -228,7 +227,7 @@ async function api() {
           const payload = JSON.parse(jsonData.payload);
 
           payload.records.forEach((record) => {
-            let content = `Username: ${record.username}, \nScore: ${record.score}, \nRank: ${record.rank}, \nUser ID: ${record.owner_id}\n===========================================================================================\n`;
+            let content = `<strong>Username: ${record.username},</strong>\nRank: ${record.rank},\nScore: ${record.score}, \nUser ID: ${record.owner_id}\n<hr class="barrier"/>`;
             res.write(content);
           });
         }
@@ -242,10 +241,11 @@ async function api() {
       });
     }
   });
-  app.get('/v2/getAllTop50', async (req, res) => { //Search user
+  app.get('/v2/getAllTop50', async (req, res) => {
+    //Search user
     const allSSN = [
-      10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
-      30, 31, 32, 33, 34, 35, 36
+      10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
+      29, 30, 31, 32, 33, 34, 35, 36,
     ];
     const { name, userID } = req.query;
 

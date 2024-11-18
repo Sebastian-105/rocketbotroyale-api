@@ -148,28 +148,24 @@ textarea {
 
 .content1 {
   z-index: 7;
-  display: none;
+  display: block;  
   width: 90%;
   background-image: url('./background.png');
   background-repeat: repeat;
   animation: moveBackground1 15s linear infinite;
-  /* background: linear-gradient(
-    0deg,
-    rgba(0, 78, 166, 1) 0%,
-    rgba(0, 89, 188, 1) 50%,
-    rgba(0, 98, 201, 1) 100%
-  ); */
   position: relative;
   height: auto;
   border-radius: 15px;
   border: solid black 5px;
   outline: solid white 8px;
+
 }
-.content1 .exit {
+.exit {
   position: absolute;
-  top: -25px;
-  right: -25px;
+  top: -20px;
+  right: -20px;
   cursor: pointer;
+  z-index: 10;
 }
 
 /* Filter options styling */
@@ -205,4 +201,8 @@ textarea {
 
 .optionsButton:hover {
   background-color: #0078bd;
+}
+.barrier {
+  opacity: 0.85;
+  width: 75%;
 }
