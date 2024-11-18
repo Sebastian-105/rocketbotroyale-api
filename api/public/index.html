@@ -61,7 +61,8 @@
         />
       </svg>
       <h1 id="title"></h1>
-      <hr style="height: 3px; background-color: white" />
+      <hr/>
+      <br />
       <div id="root"></div>
     </div>
     <div class="content">
@@ -201,14 +202,7 @@
         let res = document.getElementById('userID').value;
         window.open(`./v2/getAllPlacements?place=${res}`);
       }
-      function getUser() {
-        let res = document.getElementById('userID').value;
-        if (res.includes('-')) {
-          window.open(`./v2/getAllTop50?userID=${res}`);
-        } else {
-          window.open(`./v2/getAllTop50?name=${res}`);
-        }
-      }
+      
 
       function openFullProfile() {
         let user_id = document.getElementById('userID').value;

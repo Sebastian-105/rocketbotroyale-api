@@ -174,19 +174,25 @@ textarea {
   animation: moveBackground1 15s linear infinite;
   position: fixed;
   min-height: 500px;
-  height: auto;
+  height: 500px; /* Set a fixed height to enable scrolling */
+  overflow-y: auto;
+  overflow-x: hidden;
   border-radius: 15px;
   border: solid black 5px;
   outline: solid white 8px;
 
 }
-
+hr {
+  height: 3px;
+  background-color: white;
+}
 .exit {
   position: absolute;
-  top: -20px;
-  right: -20px;
+  float: right;
+  right: 2px;
+  top:2px;
   cursor: pointer;
-  z-index: 10;
+  z-index: 51;
 }
 
 /* Filter options styling */

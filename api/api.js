@@ -272,7 +272,7 @@ async function api() {
                 let seasonNumber = record.leaderboard_id.split(
                   'tankkings_trophies_',
                 )[1];
-                let content = `Username: ${record.username}\nUser ID: ${record.owner_id}\nSeason: ${seasonNumber}\nRank: ${record.rank}\n===========================================================================================\n`;
+                let content = `Username: ${record.username}\nUser ID: ${record.owner_id}\nSeason: ${seasonNumber}\nRank: ${record.rank}\n<hr class="barrier"/>\n`;
                 res.write(content);
               }
             } else if (!searchID && searchName) {
@@ -283,7 +283,7 @@ async function api() {
                 let seasonNumber = record.leaderboard_id.split(
                   'tankkings_trophies_',
                 )[1];
-                let content = `Username: ${record.username},\nUser ID: ${record.owner_id},\nSeason: ${seasonNumber},\nRank: ${record.rank},\n===========================================================================================\n`;
+                let content = `Username: ${record.username},\nUser ID: ${record.owner_id},\nSeason: ${seasonNumber},\nRank: ${record.rank},\n<hr class="barrier"/>\n`;
                 res.write(content);
               }
             }
@@ -291,7 +291,7 @@ async function api() {
               let seasonNumber = record.leaderboard_id.split(
                 'tankkings_trophies_',
               )[1];
-              let content = `Username: ${record.username},\nUser ID: ${record.owner_id},\nSeason: ${seasonNumber},\nRank: ${record.rank},\n===========================================================================================\n`;
+              let content = `Username: ${record.username},\nUser ID: ${record.owner_id},\nSeason: ${seasonNumber},\nRank: ${record.rank},\n<hr class="barrier"/>\n`;
               res.write(content);
             }
           });
@@ -333,7 +333,7 @@ async function api() {
                 let seasonNumber = record.leaderboard_id.split(
                   'tankkings_trophies_',
                 )[1];
-                let content = `Username: ${record.username}\nUser ID: ${record.owner_id}\nSeason: ${seasonNumber}\nRank: ${record.rank}\n===========================================================================================\n`;
+                let content = `Username: ${record.username}\nUser ID: ${record.owner_id}\nSeason: ${seasonNumber}\nRank: ${record.rank}\n<hr class="barrier"/>\n`;
                 res.write(content);
               }
             });
@@ -360,7 +360,7 @@ async function api() {
 
     try {
       res.write(
-        `\n\nHow it works:\nThis hopefully will semi-accurately guess an players skill based on their stats. Each stat is on a scale of 1-10, then I will average it out. But best rank is the most skill defining stat so it would mean more points. If best rank exceeds 1000, then it goes negative\nAs of now there is no cap for scoring, but 117.76 was the highest I could find, see if you can find anyone with a higher score (d02c1463-5960-46e2-8e6d-efafb1319db6)\n\n========================================================================================================================================================================\n\n`,
+        `\n\nHow it works:\nThis hopefully will semi-accurately guess an players skill based on their stats. Each stat is on a scale of 1-10, then I will average it out. But best rank is the most skill defining stat so it would mean more points. If best rank exceeds 1000, then it goes negative\nAs of now there is no cap for scoring, but 117.76 was the highest I could find, see if you can find anyone with a higher score (d02c1463-5960-46e2-8e6d-efafb1319db6)\n\n<hr />\n\n`,
       );
       async function skillCheck(userID) {
         let token = await updateToken();
@@ -407,7 +407,7 @@ async function api() {
             Math.round((best_rankSkill1 + winrateSkill1 + kdSkill1) * 100) /
             100;
           console.log(finalSkill);
-          let contentFinal = `Username: ${display_name}\n\nTotal Score: ${finalSkill}\n\nBreakdown:\nBest Rank Points: ${best_rankSkill1} | Best Rank: ${rank}\nWinrate Points: ${winrateSkill1} | Winrate: ${winrate}\nKDR Points: ${kdSkill1} | KDR ${kd}\n\n======================================================================================================\n\n`;
+          let contentFinal = `Username: ${display_name}\n\nTotal Score: ${finalSkill}\n\nBreakdown:\nBest Rank Points: ${best_rankSkill1} | Best Rank: ${rank}\nWinrate Points: ${winrateSkill1} | Winrate: ${winrate}\nKDR Points: ${kdSkill1} | KDR ${kd}\n\n<hr/>\n\n`;
           res.write(contentFinal);
         }
 
@@ -485,7 +485,7 @@ async function api() {
           let level = newContent.metadata.progress.level;
           let exp = newContent.metadata.progress.xp;
 
-          let contentFinal = `Display Name: ${display_name}\nOnline: ${online}\nUser ID: ${ownerID}\nFriend Code: ${friendCode}\nBest Rank: ${rank}\nLevel: ${level}\nTotal XP: ${exp}\n\n========================================\n\nTargetting:\n\nSkin: ${skin}\n\n========================================\n\nAdvanced:\n\nAccount Created (EST): ${createTime} | ${createTime2}\nLast Account Update (EST): ${accUpdateTime2} | ${accUpdateTime}\n\n========================================\n\nStats:\n\nDouble Kills: ${dKills}\nTriple Kills: ${tKills}\nQuad Kills: ${qKills}\n\n========================================\n\nKills using:\nMines: ${mine}\nDrills ${drill}\nNukes ${nuke}\nFlak ${flak}\nGrenade: ${grenade}\nHoming: ${homing}\nLaser: ${laser}\nPoison: ${poison}\nShield: ${shield}\nRapids: ${rapid}\nDunks: ${dunks}\nTotal Kills: ${totalkills}\n\n\n======================================================================================================================================================================\n\n\n`;
+          let contentFinal = `Display Name: ${display_name}\nOnline: ${online}\nUser ID: ${ownerID}\nFriend Code: ${friendCode}\nBest Rank: ${rank}\nLevel: ${level}\nTotal XP: ${exp}\n\n<hr class="barrier"/>\n\nTargetting:\n\nSkin: ${skin}\n\n<hr class="barrier"/>\n\nAdvanced:\n\nAccount Created (EST): ${createTime} | ${createTime2}\nLast Account Update (EST): ${accUpdateTime2} | ${accUpdateTime}\n\n<hr class="barrier"/>\n\nStats:\n\nDouble Kills: ${dKills}\nTriple Kills: ${tKills}\nQuad Kills: ${qKills}\n\n<hr class="barrier"/>\n\nKills using:\nMines: ${mine}\nDrills ${drill}\nNukes ${nuke}\nFlak ${flak}\nGrenade: ${grenade}\nHoming: ${homing}\nLaser: ${laser}\nPoison: ${poison}\nShield: ${shield}\nRapids: ${rapid}\nDunks: ${dunks}\nTotal Kills: ${totalkills}\n\n\n<hr />\n\n\n`;
           res.write(contentFinal);
         }
         res.end();
