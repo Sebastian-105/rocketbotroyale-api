@@ -213,41 +213,7 @@ async function api() {
   app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
   });
-  app.get('/v2/deleteAccount', async (req, res) => {
-    console.log("accessed")
-    try {
-        // Extract the user credentials from the request body
-        const { email, password } = req.query;
-
-        if (!email || !password) {
-            return res.status(400).json({ error: 'Missing credentials (email or password)' });
-        }
-
-        // Step 1: Get the token using the addToken function
-        let token = await addToken(email, password);
-
-        // Step 2: Make a DELETE request to the external service to delete the account
-        const deleteResponse = await axios.delete(
-            'https://dev-nakama.winterpixel.io/v2/account',  // Your endpoint for deleting the account
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                }
-            }
-        );
-
-        // Step 3: Handle the response from the DELETE request
-        if (deleteResponse.status === 200) {
-            return res.status(200).json({ message: 'Account deleted successfully' });
-        } else {
-            return res.status(deleteResponse.status).json({ error: 'Failed to delete account' });
-        }
-    } catch (error) {
-        console.error('Error deleting account:', error);
-        return res.status(500).json({ error: error.message });
-    }
-})
+  
  app.get('/v2/account/json/getProfile', async (req, res) => {
     const { id } = req.query; // Get playerID from query params
 
