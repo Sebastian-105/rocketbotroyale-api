@@ -167,7 +167,7 @@ textarea {
 
 .content1 {
   z-index: 7;
-  display: block;
+  display: none;
   width: 90%;
   background-image: url('./background.png');
   background-repeat: repeat;

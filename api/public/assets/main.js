@@ -97,3 +97,7 @@ async function getUser() {
     showContent('Data:', data);
 
 }
+function del() {
+  let data = `<p style="font-size:25px;"> If you want to delete an account then you have to contact me on discord. If I approve then I'll delete the acc for you. <br/>My discord username is "Sebastian-105"</p>`
+  showContent('Offical', data)
+}

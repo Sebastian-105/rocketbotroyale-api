@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 const cors = require('cors');
 const app = express();
 const port = 8080;
@@ -74,6 +75,62 @@ async function getProfile(id, token) {
   });
 }
 async function updateToken() {
+    try {
+        const authResponse = await axios.post(
+            'https://dev-nakama.winterpixel.io/v2/account/authenticate/email?create=false',
+            JSON.stringify({
+                email: test_email,
+                password: test_password,
+                vars: { client_version: "99999" }
+            }),
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic OTAyaXViZGFmOWgyZTlocXBldzBmYjlhZWIzOTo='
+                }
+            }
+        );
+
+        const token = authResponse.data.token;
+
+        if (!token) {
+            throw new Error('No token received');
+        }
+
+        return token;
+    } catch (error) {
+        throw new Error(`Error fetching token: ${error.response ? JSON.stringify(error.response.data) : error.message}`);
+    }
+}
+async function addToken(email, password) {
+  try {
+      const authResponse = await axios.post(
+          'https://dev-nakama.winterpixel.io/v2/account/authenticate/email?create=false',
+          JSON.stringify({
+              email: email,
+              password: password,
+              vars: { client_version: "99999" }
+          }),
+          {
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Basic OTAyaXViZGFmOWgyZTlocXBldzBmYjlhZWIzOTo='
+              }
+          }
+      );
+
+      const token = authResponse.data.token;
+
+      if (!token) {
+          throw new Error('No token received');
+      }
+
+      return token;
+  } catch (error) {
+      throw new Error(`Error fetching token: ${error.response ? JSON.stringify(error.response.data) : error.message}`);
+  }
+}
+async function updateToken2() {
   return await fetch(
     `https://dev-nakama.winterpixel.io/v2/account/authenticate/custom?create=true&`,
     {
@@ -156,7 +213,42 @@ async function api() {
   app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
   });
-  app.get('/v2/account/json/getProfile', async (req, res) => {
+  app.get('/v2/deleteAccount', async (req, res) => {
+    console.log("accessed")
+    try {
+        // Extract the user credentials from the request body
+        const { email, password } = req.query;
+
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Missing credentials (email or password)' });
+        }
+
+        // Step 1: Get the token using the addToken function
+        let token = await addToken(email, password);
+
+        // Step 2: Make a DELETE request to the external service to delete the account
+        const deleteResponse = await axios.delete(
+            'https://dev-nakama.winterpixel.io/v2/account',  // Your endpoint for deleting the account
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                }
+            }
+        );
+
+        // Step 3: Handle the response from the DELETE request
+        if (deleteResponse.status === 200) {
+            return res.status(200).json({ message: 'Account deleted successfully' });
+        } else {
+            return res.status(deleteResponse.status).json({ error: 'Failed to delete account' });
+        }
+    } catch (error) {
+        console.error('Error deleting account:', error);
+        return res.status(500).json({ error: error.message });
+    }
+})
+ app.get('/v2/account/json/getProfile', async (req, res) => {
     const { id } = req.query; // Get playerID from query params
 
     if (!id) {
@@ -181,8 +273,10 @@ async function api() {
     const token = await updateToken(); // Assume updateToken fetches the required token
     const playerData = await fcToID(fc, token);
     try {
-      let newData = JSON.parse(JSON.parse(JSON.stringify(playerData)).payload);
-      res.json(newData);
+      let newData = JSON.parse(JSON.parse(JSON.stringify(playerData)).payload); 
+      let realData = newData.user_id
+      console.log(realData)
+      res.write(realData);
     } catch (err) {
       res.status(500).json({ error: 'Failed to fetch player data' });
     }
@@ -202,6 +296,7 @@ async function api() {
         const element = ssnList[index];
         const leaderboards1 = await getLeaderboard(ssn, token);
         res.json(leaderboards1);
+        
       }
     } catch (err) {
       res.status(500).json({ error: 'Failed to fetch leaderboard' });
