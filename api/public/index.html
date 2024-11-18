@@ -1,146 +1,225 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>105 | Sebastian</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Include Axios -->
+    <link rel="stylesheet" href="./assets/main.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>105 | Sebastian</title>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <!-- Include Axios -->
-  <link rel="stylesheet" href="./assets/main.css" />
-</head>
+  <body>
+    <div class="loaderBackground">
+      <figure>
+        <img class="loader" src="./assets/drag-to-aim-lg.png" />
+        <figcaption id="loadingFont">Loading</figcaption>
+      </figure>
+    </div>
+    <div
+      class="content1"
+      style="position: fixed; z-index: 50; top: 50px; min-height: 500px"
+    >
+      <svg
+        class="exit"
+        width="50"
+        height="50"
+        viewBox="0 0 50 50"
+        xmlns="http://www.w3.org/2000/svg"
+        title="Close window"
+      >
+        <rect
+          fill="#ff003c"
+          width="44"
+          height="44"
+          stroke="#84001f"
+          stroke-width="2"
+          x="3"
+          y="3"
+          rx="5"
+          ry="5"
+        />
 
-<body>
-  <div class="loaderBackground">
-    <figure>
-      <img class="loader" src="./assets/drag-to-aim-lg.png" />
-      <figcaption id="loadingFont">Loading</figcaption>
-    </figure>
-  </div>
-  <div class="content1">
-    <svg class="exit" width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg"
-      title="Close window">
-      <rect fill="#ff003c" width="44" height="44" stroke="#84001f" stroke-width="2" x="3" y="3" rx="5" ry="5" />
+        <line
+          x1="16"
+          y1="16"
+          x2="34"
+          y2="34"
+          stroke="white"
+          stroke-width="5"
+          stroke-linecap="round"
+        />
 
-      <line x1="16" y1="16" x2="34" y2="34" stroke="white" stroke-width="5" stroke-linecap="round" />
-
-      <line x1="16" y1="34" x2="34" y2="16" stroke="white" stroke-width="5" stroke-linecap="round" />
-    </svg>
-    <h1 id="title"></h1>
-    <hr style="height:3px; background-color: white;" />
-    <div id="root"></div>
-  </div>
-  <div class="content">
-    <img src="./assets/community_site_image_2.png" style="height: 100px" />
-    <h1>105 | Sebastian</h1>
-    <div>
-      <h2 title="see full docs here">What is this?</h2>
-      <p>
-        This website is here for anyone to check a bunch of things in
-        rocketbotroyale
-      </p>
-      <p>
-        Just enter in your user ID, and with that you can view your stats and
-        your estimated skill level. Or you can enter in a certain season to
-        view the top 50 in that season (note: this only works with season 11
-        to the most current season).
-      </p>
-      <p>
-        You can also check my code to see how good you are, this code just
-        does some simple math to get your skill based on your stats. Keep in
-        mind this isn't always accurate, and that some players are better than
-        their stats show, whilst others are worse.
-      </p>
-      <strong style="color: #ff3333">
-        <h3>
-          IF YOU ENTER IN YOUR USER ID WRONG IN CHECK SKILL IT BREAKS FOR A
-          BIT
-        </h3>
-      </strong>
-      <p></p>
-      <p>
-        Pressing the get all placement button with a desired placment will get
-        everyone that has gotten that placement, (with duplicates).
-      </p>
-      <p>
-        Pressing the Search user will find every user in every season that has
-        gotten the top 50, and return it. It also has duplicates.
-      </p>
-      <h2>To enter in multiple ids/seasons, seperate them with spaces</h2>
-      <hr style="width: 85%; border-radius: 15px; background-color: white" />
-      <h1>Enter your user ID below:</h1>
-      <textarea rows="50" cols="33" id="userID" class="inputField" minlength="1" maxlength="1000"
-        placeholder="Enter User ID or number season for the leaderboards"></textarea>
-      <br />
-      <br />
-      <button class="optionsButton" id="getUserDataButton" type="submit" onclick="openFullProfile()"
-        title="returns the full json code, for any coders">
-        Get Full User Data
-      </button>
-      <button class="optionsButton" id="getUserDataSimple" type="submit" onclick="openSimpleProfile()"
-        title="gets simplified version of a users profile">
-        Get User Data
-      </button>
-      <button class="optionsButton" id="getUser" type="submit" onclick="getUser()"
-        title="returns the leaderboards in json format, for any coders">
-        Search user
-      </button>
-      <br />
-      <br />
-      <button class="optionsButton" id="getLeaderboards" type="submit" onclick="openJsonLeaderboards()"
-        title="returns the leaderboards in json format, for any coders">
-        Get Full Leaderboards
-      </button>
-      <button class="optionsButton" id="getLeaderboards" type="submit" onclick="openSimpleLeaderboards()"
-        title="returns the leaderboards in readable format">
-        Get readable Leaderboards
-      </button>
-      <button class="optionsButton" id="getLeaderboards" type="submit" onclick="getPlacements()"
-        title="Returns all set placements from every season">
-        Get all placements
-      </button>
-      <br />
-      <br />
-      <button class="optionsButton" id="getLeaderboards" type="submit" onclick="checkSkill()"
-        title="returns the leaderboards in json format, for any coders">
-        Check Skill (Beta)
-      </button>
-      <button class="optionsButton" id="getLeaderboards" type="submit" onclick="convert()"
-        title="returns the leaderboards in json format, for any coders">
-        Friend code to User id
-      </button>
-      <br />
+        <line
+          x1="16"
+          y1="34"
+          x2="34"
+          y2="16"
+          stroke="white"
+          stroke-width="5"
+          stroke-linecap="round"
+        />
+      </svg>
+      <h1 id="title"></h1>
+      <hr style="height: 3px; background-color: white" />
+      <div id="root"></div>
+    </div>
+    <div class="content">
+      <img src="./assets/community_site_image_2.png" style="height: 100px" />
+      <h1>105 | Sebastian</h1>
+      <div>
+        <h2 title="see full docs here">What is this?</h2>
+        <p>
+          This website is here for anyone to check a bunch of things in
+          rocketbotroyale
+        </p>
+        <p>
+          Just enter in your user ID, and with that you can view your stats and
+          your estimated skill level. Or you can enter in a certain season to
+          view the top 50 in that season (note: this only works with season 11
+          to the most current season).
+        </p>
+        <p>
+          You can also check my code to see how good you are, this code just
+          does some simple math to get your skill based on your stats. Keep in
+          mind this isn't always accurate, and that some players are better than
+          their stats show, whilst others are worse.
+        </p>
+        <strong style="color: #ff3333">
+          <h3>
+            IF YOU ENTER IN YOUR USER ID WRONG IN CHECK SKILL IT BREAKS FOR A
+            BIT
+          </h3>
+        </strong>
+        <p></p>
+        <p>
+          Pressing the get all placement button with a desired placment will get
+          everyone that has gotten that placement, (with duplicates).
+        </p>
+        <p>
+          Pressing the Search user will find every user in every season that has
+          gotten the top 50, and return it. It also has duplicates.
+        </p>
+        <h2>To enter in multiple ids/seasons, seperate them with spaces</h2>
+        <hr style="width: 85%; border-radius: 15px; background-color: white" />
+        <h1>Enter your user ID below:</h1>
+        <textarea
+          rows="50"
+          cols="33"
+          id="userID"
+          class="inputField"
+          minlength="1"
+          maxlength="1000"
+          placeholder="Enter User ID or number season for the leaderboards"
+        ></textarea>
+        <br />
+        <br />
+        <button
+          class="optionsButton"
+          id="getUserDataButton"
+          type="submit"
+          onclick="openFullProfile()"
+          title="returns the full json code, for any coders"
+        >
+          Get Full User Data
+        </button>
+        <button
+          class="optionsButton"
+          id="getUserDataSimple"
+          type="submit"
+          onclick="openSimpleProfile()"
+          title="gets simplified version of a users profile"
+        >
+          Get User Data
+        </button>
+        <button
+          class="optionsButton"
+          id="getUser"
+          type="submit"
+          onclick="getUser()"
+          title="returns the leaderboards in json format, for any coders"
+        >
+          Search user
+        </button>
+        <br />
+        <br />
+        <button
+          class="optionsButton"
+          id="getLeaderboards"
+          type="submit"
+          onclick="openJsonLeaderboards()"
+          title="returns the leaderboards in json format, for any coders"
+        >
+          Get Full Leaderboards
+        </button>
+        <button
+          class="optionsButton"
+          id="getLeaderboards"
+          type="submit"
+          onclick="openSimpleLeaderboards()"
+          title="returns the leaderboards in readable format"
+        >
+          Get readable Leaderboards
+        </button>
+        <button
+          class="optionsButton"
+          id="getLeaderboards"
+          type="submit"
+          onclick="getPlacements()"
+          title="Returns all set placements from every season"
+        >
+          Get all placements
+        </button>
+        <br />
+        <br />
+        <button
+          class="optionsButton"
+          id="getLeaderboards"
+          type="submit"
+          onclick="checkSkill()"
+          title="returns the leaderboards in json format, for any coders"
+        >
+          Check Skill (Beta)
+        </button>
+        <button
+          class="optionsButton"
+          id="getLeaderboards"
+          type="submit"
+          onclick="convert()"
+          title="returns the leaderboards in json format, for any coders"
+        >
+          Friend code to User id
+        </button>
+        <br />
+        <br />
+      </div>
       <br />
     </div>
-    <br />
-  </div>
-  <script src="./assets/main.js"></script>
-  <script>
-    function getPlacements() {
-      let res = document.getElementById('userID').value;
-      window.open(`./v2/getAllPlacements?place=${res}`);
-    }
-    function getUser() {
-      let res = document.getElementById('userID').value;
-      if (res.includes('-')) {
-        window.open(`./v2/getAllTop50?userID=${res}`);
-      } else {
-        window.open(`./v2/getAllTop50?name=${res}`);
+    <script src="./assets/main.js"></script>
+    <script>
+      function getPlacements() {
+        let res = document.getElementById('userID').value;
+        window.open(`./v2/getAllPlacements?place=${res}`);
       }
-    }
+      function getUser() {
+        let res = document.getElementById('userID').value;
+        if (res.includes('-')) {
+          window.open(`./v2/getAllTop50?userID=${res}`);
+        } else {
+          window.open(`./v2/getAllTop50?name=${res}`);
+        }
+      }
 
+      function openFullProfile() {
+        let user_id = document.getElementById('userID').value;
+        window.open(`./v2/account/json/getProfile?id=${user_id}`);
+      }
 
-    function openFullProfile() {
-      let user_id = document.getElementById('userID').value;
-      window.open(`./v2/account/json/getProfile?id=${user_id}`);
-    }
-
-    function openJsonLeaderboards() {
-      let ssn = document.getElementById('userID').value;
-      window.open(`./v2/json/getLeaderboards?ssn=${ssn}`);
-    }
-  </script>
-  <script src="./assets/main.js"></script>
-</body>
-
+      function openJsonLeaderboards() {
+        let ssn = document.getElementById('userID').value;
+        window.open(`./v2/json/getLeaderboards?ssn=${ssn}`);
+      }
+    </script>
+    <script src="./assets/main.js"></script>
+  </body>
 </html>
