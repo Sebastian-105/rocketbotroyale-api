@@ -430,7 +430,7 @@ async function api() {
     // prettier version of it
     const { id } = req.query; // Get playerID from query params
     const idList = id.split(' ');
-    console.log(`IDs\n${idList}`);
+    console.log(`Check Skill:\nIDs\n${idList}`);
     if (!id) {
       return res.status(400).json({ error: 'id is required' });
     }
@@ -496,11 +496,11 @@ async function api() {
     }
   });
   app.get('/v2/account/p/getProfile', async (req, res) => {
-    // prettier version of it
+    // prettier version of ita
     const { id } = req.query; // Get playerID from query params
     var tempUrl = id.replace(/%20/g, ' ');
     const idList = tempUrl.split(' ');
-    console.log(`IDs\n${idList}`);
+    console.log(`Get Profile:\nIDs\n${idList}`);
 
     if (!id) {
       return res.status(400).json({ error: 'id is required' });
