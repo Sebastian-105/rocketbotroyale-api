@@ -62,7 +62,8 @@ async function openSimpleProfile() {
 
     let user_id = document.getElementById('userID').value;
     let data = await fetchMain('./v2/account/p/getProfile', 'id', user_id);
-    showContent('Profile:', data);
+    let newData = data.replace('_', ' ')
+    showContent('Profile:', newData);
 
 }
 async function checkSkill() {
@@ -96,8 +97,4 @@ async function getUser() {
     }
     showContent('Data:', data);
 
-}
-function del() {
-  let data = `<p style="font-size:25px;"> If you want to delete an account then you have to contact me on discord. If I approve then I'll delete the acc for you. <br/>My discord username is "Sebastian-105"</p>`
-  showContent('Offical', data)
 }

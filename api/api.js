@@ -2,7 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 const app = express();
-const port = 8080;
+const port = 8083;
 const path = require('path');
 const fs = require('fs');
 
@@ -74,6 +74,46 @@ async function getProfile(id, token) {
     return res.json();
   });
 }
+
+async function getConfig(token) {
+  return await fetch(
+    'https://dev-nakama.winterpixel.io/v2/rpc/winterpixel_get_config',
+    {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`,
+      },
+    },
+  )
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.text(); // Parse response as JSON
+    })
+    .catch((error) => {
+      console.error(`Error in fetch: ${error.message}`);
+    });
+}
+
+
+async function config() {
+    const token = await updateToken(); // Fetch valid token  
+    try {
+      const response = await getConfig(token);
+      const jsonData = JSON.parse(response);
+      const payload1  = JSON.parse(jsonData.payload);  
+      let skins = payload1["awards"];
+      clientVerison = payload1["client_version"]
+      console.log(clientVerison)
+    
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+ config()
 async function updateToken() {
     try {
         const authResponse = await axios.post(
@@ -129,36 +169,6 @@ async function addToken(email, password) {
   } catch (error) {
       throw new Error(`Error fetching token: ${error.response ? JSON.stringify(error.response.data) : error.message}`);
   }
-}
-async function updateToken2() {
-  return await fetch(
-    `https://dev-nakama.winterpixel.io/v2/account/authenticate/custom?create=true&`,
-    {
-      headers: {
-        accept: 'application/json',
-        'accept-language': 'en-US,en;q=0.9',
-        authorization: 'Basic OTAyaXViZGFmOWgyZTlocXBldzBmYjlhZWIzOTo=',
-        priority: 'u=1, i',
-        'sec-ch-ua': '"Chromium";v="127", "Not)A;Brand";v="99"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"Linux"',
-        'sec-fetch-dest': 'empty',
-        'sec-fetch-mode': 'cors',
-        'sec-fetch-site': 'same-site',
-        Referer: 'https://rocketbotroyale.winterpixel.io/',
-        'Referrer-Policy': 'strict-origin-when-cross-origin',
-      },
-      body: `{"email":"${test_email}","password":"${test_password}","id":"${test_id}","vars":{"client_version":"67","platform":"HTML5"}}`,
-      method: 'POST',
-    },
-  )
-    .then(function (res) {
-      return res.json();
-    })
-    .then(function (json) {
-      // console.log(json);
-      return json['token'];
-    });
 }
 
 async function getStatus(id, token) {
@@ -255,6 +265,9 @@ async function api() {
     if (!ssn) {
       return res.status(400).json({ error: 'Season Number is required' });
     }
+    if (ssn.length > 3) {
+      return res.status(400).json({ error: 'Season is required' });
+    }
 
     try {
       const token = await updateToken();
@@ -274,6 +287,9 @@ async function api() {
     var tempUrl = ssn.replace(/%20/g, ' ');
     let ssnList = tempUrl.split(' ');
     if (!ssn) {
+      return res.status(400).json({ error: 'Season is required' });
+    }
+    if (ssn.length > 3) {
       return res.status(400).json({ error: 'Season is required' });
     }
 
@@ -489,6 +505,7 @@ async function api() {
     if (!id) {
       return res.status(400).json({ error: 'id is required' });
     }
+   
 
     try {
       async function getProfileP(userID) {
