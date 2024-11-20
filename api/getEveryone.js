@@ -33,10 +33,9 @@ async function main() {
       const response = await getConfig(token);
       const jsonData = JSON.parse(response);
       const payload1  = JSON.parse(jsonData.payload);  
-      console.log(payload1["awards"][])
+      console.log(payload1["awards"]["128bit"])
     
     } catch (error) {
       console.error(error.message);
     }
   }
-main()
